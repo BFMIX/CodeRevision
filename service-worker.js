@@ -1,4 +1,4 @@
-const CACHE_NAME = "code-revision-cache-v1";
+const CACHE_NAME = "code-revision-shell-v2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -15,13 +15,11 @@ self.addEventListener("install", (event) => {
 
 self.addEventListener("activate", (event) => {
   event.waitUntil(
-    caches.keys().then((keys) =>
-      Promise.all(
-        keys
-          .filter((key) => key !== CACHE_NAME)
-          .map((key) => caches.delete(key))
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key)))
       )
-    )
   );
   self.clients.claim();
 });
@@ -44,8 +42,8 @@ self.addEventListener("fetch", (event) => {
 
       return fetch(event.request)
         .then((response) => {
-          const cloned = response.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, cloned));
+          const copy = response.clone();
+          caches.open(CACHE_NAME).then((cache) => cache.put(event.request, copy));
           return response;
         })
         .catch(() => caches.match("./index.html"));

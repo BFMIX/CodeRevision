@@ -51,60 +51,66 @@ const MODULES = [
   },
 ];
 
-const STORAGE_KEY = "codeRevision.pwa.state.v1";
+const ROUTES = ["home", "tests", "progress", "settings"];
+const STORAGE_KEY = "codeRevision.local.ui.v2";
+const RING_CIRCUMFERENCE = 326.73;
 
 const state = loadState();
 let selectedModuleId = null;
 let iframeModuleId = null;
+let toastTimeout = null;
 
 const views = Array.from(document.querySelectorAll(".view"));
-const navButtons = Array.from(document.querySelectorAll(".nav-btn"));
+const navLinks = Array.from(document.querySelectorAll("[data-route-link]"));
 const testsList = document.getElementById("tests-list");
 const progressList = document.getElementById("progress-list");
+const homeCount = document.getElementById("home-count");
+const homePercent = document.getElementById("home-percent");
+
+const ringFill = document.getElementById("ring-fill");
+const ringPercent = document.getElementById("ring-percent");
+const ringCount = document.getElementById("ring-count");
 const progressSummary = document.getElementById("progress-summary");
-const homeValidatedCount = document.getElementById("home-validated-count");
-const homeProgressPercent = document.getElementById("home-progress-percent");
-const homeStreak = document.getElementById("home-streak");
+
+const darkModeToggle = document.getElementById("darkmode-toggle");
+const resetBtn = document.getElementById("reset-btn");
 
 const pretestModal = document.getElementById("pretest-modal");
+const pretestModuleName = document.getElementById("pretest-module-name");
 const cancelPretestBtn = document.getElementById("cancel-pretest-btn");
-const startPretestBtn = document.getElementById("start-pretest-btn");
+const startTestBtn = document.getElementById("start-test-btn");
 
-const iframeOverlay = document.getElementById("iframe-overlay");
-const closeIframeBtn = document.getElementById("close-iframe-btn");
-const testIframe = document.getElementById("test-iframe");
-const iframeTitle = document.getElementById("iframe-title");
+const iframeScreen = document.getElementById("iframe-screen");
+const iframeBackBtn = document.getElementById("iframe-back-btn");
+const iframeScreenTitle = document.getElementById("iframe-screen-title");
+const moduleIframe = document.getElementById("module-iframe");
 
 const validationModal = document.getElementById("validation-modal");
 const validationForm = document.getElementById("validation-form");
-const validationFinished = document.getElementById("validation-finished");
-const validationScore = document.getElementById("validation-score");
-const validationMessage = document.getElementById("validation-message");
 const cancelValidationBtn = document.getElementById("cancel-validation-btn");
+const checkFinished = document.getElementById("check-finished");
+const checkScore = document.getElementById("check-score");
+const validationFeedback = document.getElementById("validation-feedback");
 
-const themeToggle = document.getElementById("theme-toggle");
-const resetProgressBtn = document.getElementById("reset-progress-btn");
 const toast = document.getElementById("toast");
 
-init();
+initialize();
 
-function init() {
-  applyTheme(state.theme || "light");
-  themeToggle.checked = state.theme === "dark";
+function initialize() {
+  hydrateModules();
+  applyTheme(state.darkMode);
+  darkModeToggle.checked = state.darkMode;
   attachEvents();
   renderAll();
+  ensureHashRoute();
+  syncRoute();
   registerServiceWorker();
 }
 
 function createDefaultState() {
   return {
-    theme: "light",
+    darkMode: false,
     modules: {},
-    totalValidated: 0,
-    streak: {
-      count: 0,
-      lastValidationDate: null,
-    },
   };
 }
 
@@ -119,33 +125,56 @@ function loadState() {
   try {
     const parsed = JSON.parse(raw);
     return {
-      ...fallback,
-      ...parsed,
-      modules: {
-        ...fallback.modules,
-        ...(parsed.modules || {}),
-      },
-      streak: {
-        ...fallback.streak,
-        ...(parsed.streak || {}),
-      },
+      darkMode:
+        typeof parsed.darkMode === "boolean"
+          ? parsed.darkMode
+          : parsed.theme === "dark",
+      modules: parsed.modules || {},
     };
   } catch (_error) {
     return fallback;
   }
 }
 
-function saveState() {
-  state.totalValidated = computeTotalValidated();
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+function persistState() {
+  localStorage.setItem(
+    STORAGE_KEY,
+    JSON.stringify({
+      darkMode: state.darkMode,
+      modules: state.modules,
+    })
+  );
+}
+
+function hydrateModules() {
+  MODULES.forEach((module) => {
+    ensureModuleState(module.id);
+  });
+  persistState();
+}
+
+function ensureModuleState(moduleId) {
+  const key = String(moduleId);
+  const current = state.modules[key];
+
+  if (!current || typeof current !== "object") {
+    state.modules[key] = {
+      validated: false,
+      validatedAt: null,
+    };
+    return state.modules[key];
+  }
+
+  state.modules[key] = {
+    validated: Boolean(current.validated),
+    validatedAt: current.validatedAt || null,
+  };
+
+  return state.modules[key];
 }
 
 function attachEvents() {
-  navButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      activateView(button.dataset.target);
-    });
-  });
+  window.addEventListener("hashchange", syncRoute);
 
   testsList.addEventListener("click", (event) => {
     const target = event.target;
@@ -153,106 +182,213 @@ function attachEvents() {
       return;
     }
 
-    if (target.matches("[data-action='open']")) {
-      const moduleId = Number(target.dataset.moduleId);
-      openPretestModal(moduleId);
+    const actionElement = target.closest("[data-action]");
+    if (!(actionElement instanceof HTMLElement)) {
+      return;
     }
 
-    if (target.matches("[data-action='validate']")) {
-      const moduleId = Number(target.dataset.moduleId);
-      openValidationModal(moduleId);
+    const moduleId = Number(actionElement.dataset.moduleId);
+    if (!Number.isFinite(moduleId)) {
+      return;
+    }
+
+    const action = actionElement.dataset.action;
+    if (action === "open") {
+      openPretest(moduleId);
+    }
+
+    if (action === "validate") {
+      openValidation(moduleId);
     }
   });
 
-  cancelPretestBtn.addEventListener("click", closePretestModal);
-  startPretestBtn.addEventListener("click", () => {
+  cancelPretestBtn.addEventListener("click", closePretest);
+  startTestBtn.addEventListener("click", () => {
     if (!selectedModuleId) {
       return;
     }
-    closePretestModal();
-    openIframe(selectedModuleId);
+    closePretest();
+    openIframeScreen(selectedModuleId);
   });
 
-  closeIframeBtn.addEventListener("click", () => {
+  iframeBackBtn.addEventListener("click", () => {
     const moduleId = iframeModuleId;
-    closeIframe();
+    closeIframeScreen();
     if (moduleId) {
-      openValidationModal(moduleId);
+      openValidation(moduleId);
     }
   });
 
-  cancelValidationBtn.addEventListener("click", closeValidationModal);
-  validationForm.addEventListener("submit", handleValidationSubmit);
+  cancelValidationBtn.addEventListener("click", closeValidation);
 
-  themeToggle.addEventListener("change", () => {
-    const nextTheme = themeToggle.checked ? "dark" : "light";
-    state.theme = nextTheme;
-    applyTheme(nextTheme);
-    saveState();
-    showToast("Thème mis à jour");
+  validationForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+
+    if (!selectedModuleId) {
+      return;
+    }
+
+    const moduleState = ensureModuleState(selectedModuleId);
+
+    if (checkScore.checked) {
+      moduleState.validated = true;
+      moduleState.validatedAt = new Date().toISOString();
+      persistState();
+      renderAll();
+      closeValidation();
+      showToast("Module validé ✅");
+      setRoute("progress");
+      return;
+    }
+
+    if (!moduleState.validated) {
+      moduleState.validated = false;
+      moduleState.validatedAt = null;
+      persistState();
+      renderAll();
+    }
+
+    validationFeedback.textContent = "Tu peux le refaire 💪";
   });
 
-  resetProgressBtn.addEventListener("click", () => {
-    const accepted = window.confirm(
-      "Confirmer la réinitialisation ? Toute ta progression locale sera supprimée."
+  darkModeToggle.addEventListener("change", () => {
+    state.darkMode = darkModeToggle.checked;
+    applyTheme(state.darkMode);
+    persistState();
+    showToast(state.darkMode ? "Mode sombre activé" : "Mode clair activé");
+  });
+
+  resetBtn.addEventListener("click", () => {
+    const confirmed = window.confirm(
+      "Supprimer toute ta progression locale ?"
     );
 
-    if (!accepted) {
+    if (!confirmed) {
       return;
     }
 
     localStorage.removeItem(STORAGE_KEY);
-    const freshState = createDefaultState();
-    state.modules = freshState.modules;
-    state.totalValidated = freshState.totalValidated;
-    state.streak = freshState.streak;
-    state.theme = freshState.theme;
-    themeToggle.checked = false;
-    applyTheme("light");
-    saveState();
+    state.modules = {};
+    hydrateModules();
     renderAll();
     showToast("Progression réinitialisée");
   });
-}
 
-function activateView(viewName) {
-  views.forEach((view) => {
-    view.classList.toggle("active", view.dataset.view === viewName);
+  pretestModal.addEventListener("click", (event) => {
+    if (event.target === pretestModal) {
+      closePretest();
+    }
   });
 
-  navButtons.forEach((button) => {
-    button.classList.toggle("active", button.dataset.target === viewName);
+  validationModal.addEventListener("click", (event) => {
+    if (event.target === validationModal) {
+      closeValidation();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key !== "Escape") {
+      return;
+    }
+
+    if (!iframeScreen.classList.contains("hidden")) {
+      const moduleId = iframeModuleId;
+      closeIframeScreen();
+      if (moduleId) {
+        openValidation(moduleId);
+      }
+      return;
+    }
+
+    if (!pretestModal.classList.contains("hidden")) {
+      closePretest();
+      return;
+    }
+
+    if (!validationModal.classList.contains("hidden")) {
+      closeValidation();
+    }
+  });
+}
+
+function ensureHashRoute() {
+  const route = routeFromHash();
+  if (!route) {
+    setRoute("home", true);
+  }
+}
+
+function routeFromHash() {
+  const raw = window.location.hash.replace(/^#\/?/, "").split("?")[0];
+  return ROUTES.includes(raw) ? raw : null;
+}
+
+function setRoute(route, replace = false) {
+  const normalized = ROUTES.includes(route) ? route : "home";
+  const target = `#/${normalized}`;
+
+  if (replace) {
+    window.history.replaceState(null, "", target);
+    syncRoute();
+    return;
+  }
+
+  if (window.location.hash !== target) {
+    window.location.hash = target;
+  } else {
+    syncRoute();
+  }
+}
+
+function syncRoute() {
+  const activeRoute = routeFromHash() || "home";
+
+  views.forEach((view) => {
+    view.classList.toggle("active", view.dataset.view === activeRoute);
+  });
+
+  navLinks.forEach((link) => {
+    link.classList.toggle("active", link.dataset.routeLink === activeRoute);
   });
 }
 
 function renderAll() {
+  renderHome();
   renderTests();
   renderProgress();
-  renderHome();
+}
+
+function renderHome() {
+  const validatedCount = getValidatedCount();
+  const percent = getProgressPercent(validatedCount);
+
+  homeCount.textContent = `${validatedCount}/${MODULES.length}`;
+  homePercent.textContent = `${percent}%`;
 }
 
 function renderTests() {
   testsList.innerHTML = "";
 
   MODULES.forEach((module) => {
-    const moduleState = getModuleState(module.id);
-    const card = document.createElement("article");
-    card.className = "module-card";
+    const moduleState = ensureModuleState(module.id);
+    const validated = moduleState.validated;
 
-    const statusClass = moduleState.validated ? "ok" : "pending";
-    const statusText = moduleState.validated ? "✅ validé" : "⏳ à faire";
+    const card = document.createElement("article");
+    card.className = `module-card${validated ? " validated" : ""}`;
 
     card.innerHTML = `
-      <div class="module-header">
+      <div class="module-top">
         <div>
           <p class="module-title">${module.id}. ${module.name}</p>
-          <p class="muted">Module officiel intégré via iframe.</p>
+          <p class="module-sub">Test officiel intégré en iframe.</p>
         </div>
-        <span class="badge ${statusClass}">${statusText}</span>
+        <span class="badge ${validated ? "ok" : "pending"}">
+          ${validated ? "✅ validé" : "⏳ à faire"}
+        </span>
       </div>
       <div class="module-actions">
-        <button type="button" data-action="open" data-module-id="${module.id}">Ouvrir le test</button>
-        <button type="button" class="ghost-btn" data-action="validate" data-module-id="${module.id}">Valider ce module</button>
+        <button class="btn btn-primary" type="button" data-action="open" data-module-id="${module.id}">Ouvrir le test</button>
+        <button class="btn btn-secondary" type="button" data-action="validate" data-module-id="${module.id}">Valider ce module</button>
       </div>
     `;
 
@@ -263,29 +399,40 @@ function renderTests() {
 function renderProgress() {
   progressList.innerHTML = "";
 
-  const validatedTotal = computeTotalValidated();
-  const percent = Math.round((validatedTotal / MODULES.length) * 100);
+  const validatedCount = getValidatedCount();
+  const percent = getProgressPercent(validatedCount);
 
-  progressSummary.textContent = `${validatedTotal}/${MODULES.length} validés - ${percent}%`;
+  ringFill.style.strokeDashoffset = String(
+    RING_CIRCUMFERENCE * (1 - percent / 100)
+  );
+  ringPercent.textContent = `${percent}%`;
+  ringCount.textContent = `${validatedCount}/${MODULES.length}`;
+
+  progressSummary.textContent =
+    validatedCount === 0
+      ? "Aucun module validé pour l'instant."
+      : `${validatedCount} module${validatedCount > 1 ? "s" : ""} validé${validatedCount > 1 ? "s" : ""}.`;
 
   MODULES.forEach((module) => {
-    const moduleState = getModuleState(module.id);
-    const item = document.createElement("article");
-    item.className = "progress-item";
+    const moduleState = ensureModuleState(module.id);
+    const validated = moduleState.validated;
 
-    const statusClass = moduleState.validated ? "ok" : "pending";
-    const statusText = moduleState.validated ? "✅ validé" : "⏳ à faire";
-    const dateText = moduleState.validatedAt
+    const item = document.createElement("article");
+    item.className = `progress-item${validated ? " validated" : ""}`;
+
+    const dateLabel = validated && moduleState.validatedAt
       ? `Validé le ${formatDate(moduleState.validatedAt)}`
       : "Pas encore validé";
 
     item.innerHTML = `
-      <div class="progress-header">
+      <div class="progress-top">
         <div>
           <p class="progress-title">${module.id}. ${module.name}</p>
-          <p class="validation-date">${dateText}</p>
+          <p class="progress-sub">${dateLabel}</p>
         </div>
-        <span class="badge ${statusClass}">${statusText}</span>
+        <span class="badge ${validated ? "ok" : "pending"}">
+          ${validated ? "✅ validé" : "⏳ à faire"}
+        </span>
       </div>
     `;
 
@@ -293,157 +440,70 @@ function renderProgress() {
   });
 }
 
-function renderHome() {
-  const validatedTotal = computeTotalValidated();
-  const percent = Math.round((validatedTotal / MODULES.length) * 100);
-
-  homeValidatedCount.textContent = `${validatedTotal}/${MODULES.length}`;
-  homeProgressPercent.textContent = `${percent}%`;
-  homeStreak.textContent = String(state.streak.count || 0);
-}
-
-function getModuleState(moduleId) {
-  const key = String(moduleId);
-  if (!state.modules[key]) {
-    state.modules[key] = {
-      validated: false,
-      validatedAt: null,
-    };
-  }
-  return state.modules[key];
-}
-
-function computeTotalValidated() {
+function getValidatedCount() {
   return MODULES.reduce((count, module) => {
-    const moduleState = state.modules[String(module.id)];
-    return count + (moduleState && moduleState.validated ? 1 : 0);
+    const moduleState = ensureModuleState(module.id);
+    return count + (moduleState.validated ? 1 : 0);
   }, 0);
 }
 
-function openPretestModal(moduleId) {
+function getProgressPercent(validatedCount) {
+  return Math.round((validatedCount / MODULES.length) * 100);
+}
+
+function openPretest(moduleId) {
+  const module = MODULES.find((item) => item.id === moduleId);
+  if (!module) {
+    return;
+  }
+
   selectedModuleId = moduleId;
+  pretestModuleName.textContent = `${module.id}. ${module.name}`;
   pretestModal.classList.remove("hidden");
 }
 
-function closePretestModal() {
+function closePretest() {
   pretestModal.classList.add("hidden");
 }
 
-function openIframe(moduleId) {
+function openIframeScreen(moduleId) {
   const module = MODULES.find((item) => item.id === moduleId);
   if (!module) {
     return;
   }
 
   iframeModuleId = moduleId;
-  iframeTitle.textContent = `${module.id}. ${module.name}`;
-  testIframe.src = module.url;
-  iframeOverlay.classList.remove("hidden");
-  iframeOverlay.setAttribute("aria-hidden", "false");
+  iframeScreenTitle.textContent = `${module.id}. ${module.name}`;
+  moduleIframe.src = module.url;
+  iframeScreen.classList.remove("hidden");
+  iframeScreen.setAttribute("aria-hidden", "false");
 }
 
-function closeIframe() {
-  iframeOverlay.classList.add("hidden");
-  iframeOverlay.setAttribute("aria-hidden", "true");
-  testIframe.src = "about:blank";
+function closeIframeScreen() {
+  iframeScreen.classList.add("hidden");
+  iframeScreen.setAttribute("aria-hidden", "true");
+  moduleIframe.src = "about:blank";
   iframeModuleId = null;
 }
 
-function openValidationModal(moduleId) {
+function openValidation(moduleId) {
   selectedModuleId = moduleId;
-  validationFinished.checked = false;
-  validationScore.checked = false;
-  validationMessage.textContent = "";
+  checkFinished.checked = false;
+  checkScore.checked = false;
+  validationFeedback.textContent = "";
   validationModal.classList.remove("hidden");
 }
 
-function closeValidationModal() {
+function closeValidation() {
   validationModal.classList.add("hidden");
 }
 
-function handleValidationSubmit(event) {
-  event.preventDefault();
+function applyTheme(isDark) {
+  document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
 
-  if (!selectedModuleId) {
-    return;
-  }
-
-  const moduleState = getModuleState(selectedModuleId);
-
-  if (validationFinished.checked && validationScore.checked) {
-    const now = new Date();
-
-    moduleState.validated = true;
-    moduleState.validatedAt = now.toISOString();
-    updateStreak(now);
-
-    saveState();
-    renderAll();
-    closeValidationModal();
-    showToast("Module validé ✅");
-    activateView("progress");
-    return;
-  }
-
-  if (!moduleState.validated) {
-    moduleState.validated = false;
-    moduleState.validatedAt = null;
-  }
-  saveState();
-  renderAll();
-  validationMessage.textContent = "entraîne-toi encore, tu vas l’avoir 💪";
-}
-
-function updateStreak(validationDate) {
-  const today = toDateKey(validationDate);
-  const lastDate = state.streak.lastValidationDate;
-
-  if (!lastDate) {
-    state.streak.count = 1;
-    state.streak.lastValidationDate = today;
-    return;
-  }
-
-  if (lastDate === today) {
-    return;
-  }
-
-  const previousDay = new Date(validationDate);
-  previousDay.setDate(previousDay.getDate() - 1);
-
-  if (lastDate === toDateKey(previousDay)) {
-    state.streak.count += 1;
-    state.streak.lastValidationDate = today;
-    return;
-  }
-
-  state.streak.count = 1;
-  state.streak.lastValidationDate = today;
-}
-
-function toDateKey(dateInput) {
-  const date = new Date(dateInput);
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, "0");
-  const day = String(date.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-}
-
-function formatDate(isoDate) {
-  const date = new Date(isoDate);
-  return new Intl.DateTimeFormat("fr-FR", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  }).format(date);
-}
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute("data-theme", theme);
-  const themeColor = theme === "dark" ? "#0b1220" : "#fffaf2";
   const themeMeta = document.querySelector('meta[name="theme-color"]');
   if (themeMeta) {
-    themeMeta.setAttribute("content", themeColor);
+    themeMeta.setAttribute("content", isDark ? "#090d18" : "#f5f7ff");
   }
 }
 
@@ -451,9 +511,21 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.remove("hidden");
 
-  window.setTimeout(() => {
+  if (toastTimeout) {
+    window.clearTimeout(toastTimeout);
+  }
+
+  toastTimeout = window.setTimeout(() => {
     toast.classList.add("hidden");
-  }, 2400);
+  }, 2200);
+}
+
+function formatDate(input) {
+  return new Intl.DateTimeFormat("fr-FR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(input));
 }
 
 function registerServiceWorker() {
@@ -463,7 +535,7 @@ function registerServiceWorker() {
 
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js").catch(() => {
-      // L'app reste utilisable sans service worker.
+      // Application utilisable sans cache offline.
     });
   });
 }

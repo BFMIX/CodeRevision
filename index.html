@@ -2,149 +2,196 @@
 <html lang="fr" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#0f172a" />
-    <meta name="description" content="Application PWA d'entraînement au code de la route français - tests uniquement." />
-    <title>CodeRevision - Tests Route</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#0f1020" />
+    <meta
+      name="description"
+      content="Application Web & Mobile d'entraînement au code de la route français, tests uniquement."
+    />
+    <title>CodeRevision | Entraînement Tests</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml" />
     <link rel="apple-touch-icon" href="./assets/icons/icon.svg" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
+    <div class="bg-orb orb-a" aria-hidden="true"></div>
+    <div class="bg-orb orb-b" aria-hidden="true"></div>
+
     <div class="app-shell">
-      <header class="app-header">
-        <p class="eyebrow">CodeRevision</p>
-        <h1>Code de la route, mode tests</h1>
-        <p class="subtitle">Gratuit, mobile-first, zéro blabla. Tu t'entraînes, tu valides, tu progresses.</p>
+      <header class="topbar">
+        <div>
+          <p class="brand-pill">CodeRevision</p>
+          <h1>Code de la route</h1>
+          <p class="subtitle">Tests only. Rapide, clair, mobile, efficace.</p>
+        </div>
       </header>
 
-      <main class="views" aria-live="polite">
-        <section id="view-home" class="view active" data-view="home">
-          <div class="card hero-card">
-            <h2>Objectif examen</h2>
-            <p>35 bonnes réponses sur 40. On vise la régularité, pas la chance.</p>
-            <div class="hero-stats">
-              <div>
-                <span id="home-validated-count" class="stat-value">0/10</span>
-                <span class="stat-label">modules validés</span>
+      <main id="app-main" class="app-main" aria-live="polite">
+        <section class="view active" data-view="home">
+          <article class="card hero-card">
+            <p class="hero-kicker">Objectif examen</p>
+            <h2>35/40 minimum. Tu répètes, tu montes.</h2>
+            <div class="hero-metrics">
+              <div class="metric-chip">
+                <p id="home-count" class="metric-value">0/10</p>
+                <p class="metric-label">modules validés</p>
               </div>
-              <div>
-                <span id="home-progress-percent" class="stat-value">0%</span>
-                <span class="stat-label">progression</span>
-              </div>
-              <div>
-                <span id="home-streak" class="stat-value">0</span>
-                <span class="stat-label">jours consécutifs</span>
+              <div class="metric-chip">
+                <p id="home-percent" class="metric-value">0%</p>
+                <p class="metric-label">progression</p>
               </div>
             </div>
-          </div>
+            <a class="btn btn-primary" href="#/tests">Commencer mes tests</a>
+          </article>
 
-          <div class="card">
-            <h2>Comment ça marche</h2>
-            <ul class="simple-list">
-              <li>Tu lances un module via iframe.</li>
-              <li>Tu reviens, puis tu valides avec le mini questionnaire obligatoire.</li>
-              <li>La progression est interne et stockée localement sur ton appareil.</li>
+          <article class="card">
+            <h3>Mode d'emploi</h3>
+            <ul class="clean-list">
+              <li>Ouvre un module puis fais le test en iframe.</li>
+              <li>Au retour, valide ton résultat avec le mini check.</li>
+              <li>Ta progression reste locale sur cet appareil.</li>
             </ul>
-          </div>
+          </article>
 
-          <div class="ad-slot" aria-label="Espace publicitaire">
-            <p>Publicité (placeholder)</p>
-          </div>
+          <article class="card ad-card" aria-label="Espace publicitaire">
+            <p>Publicité - placeholder discret</p>
+          </article>
         </section>
 
-        <section id="view-tests" class="view" data-view="tests">
-          <div class="card">
-            <h2>Modules de tests</h2>
-            <p class="muted">Tests uniquement via iframe. Aucun cours intégré.</p>
-          </div>
+        <section class="view" data-view="tests">
+          <article class="card">
+            <p class="section-kicker">🧪 Tests</p>
+            <h2>Choisis ton module</h2>
+            <p class="muted">Chaque module s'ouvre en plein écran dans une vue iframe dédiée.</p>
+          </article>
 
-          <div id="tests-list" class="tests-list" aria-label="Liste des modules"></div>
+          <div id="tests-list" class="tests-grid"></div>
         </section>
 
-        <section id="view-progress" class="view" data-view="progress">
-          <div class="card">
-            <h2>Progression</h2>
-            <p id="progress-summary" class="progress-summary">0/10 validés - 0%</p>
-            <p class="disclaimer">Progression interne (non officielle)</p>
-          </div>
+        <section class="view" data-view="progress">
+          <article class="card progress-card">
+            <p class="section-kicker">📊 Progression</p>
+            <div class="progress-hero">
+              <div class="ring-wrap">
+                <svg class="progress-ring" viewBox="0 0 140 140" aria-hidden="true">
+                  <circle class="ring-track" cx="70" cy="70" r="52"></circle>
+                  <circle id="ring-fill" class="ring-fill" cx="70" cy="70" r="52"></circle>
+                </svg>
+                <div class="ring-content">
+                  <p id="ring-percent" class="ring-percent">0%</p>
+                  <p id="ring-count" class="ring-count">0/10</p>
+                </div>
+              </div>
+              <div>
+                <h2>Ton suivi interne</h2>
+                <p id="progress-summary" class="muted">0 module validé pour l'instant.</p>
+                <p class="disclaimer">Progression interne (non officielle)</p>
+              </div>
+            </div>
+          </article>
 
           <div id="progress-list" class="progress-list"></div>
         </section>
 
-        <section id="view-settings" class="view" data-view="settings">
-          <div class="card">
-            <h2>Paramètres</h2>
+        <section class="view" data-view="settings">
+          <article class="card">
+            <p class="section-kicker">⚙️ Paramètres</p>
+            <h2>Personnalisation</h2>
 
-            <label class="switch-row" for="theme-toggle">
+            <label class="switch-row" for="darkmode-toggle">
               <span>Mode sombre</span>
-              <input id="theme-toggle" type="checkbox" />
+              <span class="switch">
+                <input id="darkmode-toggle" type="checkbox" />
+                <span class="switch-slider"></span>
+              </span>
             </label>
 
-            <button id="reset-progress-btn" class="danger-btn" type="button">Réinitialiser ma progression</button>
-          </div>
+            <button id="reset-btn" class="btn btn-danger" type="button">Réinitialiser ma progression</button>
+          </article>
 
-          <div class="card">
-            <h2>Publicité</h2>
-            <div class="ad-slot compact" aria-label="Espace publicitaire">
-              <p>Placeholder pub - intégration future</p>
-            </div>
-          </div>
+          <article class="card ad-card" aria-label="Espace publicitaire">
+            <p>Publicité - emplacement futur</p>
+          </article>
         </section>
       </main>
 
       <nav class="bottom-nav" aria-label="Navigation principale">
-        <button class="nav-btn active" data-target="home" type="button">Accueil</button>
-        <button class="nav-btn" data-target="tests" type="button">Tests</button>
-        <button class="nav-btn" data-target="progress" type="button">Progression</button>
-        <button class="nav-btn" data-target="settings" type="button">Paramètres</button>
+        <a class="nav-link" data-route-link="home" href="#/home">
+          <span class="icon" aria-hidden="true">🏠</span>
+          <span>Accueil</span>
+        </a>
+        <a class="nav-link" data-route-link="tests" href="#/tests">
+          <span class="icon" aria-hidden="true">🧪</span>
+          <span>Tests</span>
+        </a>
+        <a class="nav-link" data-route-link="progress" href="#/progress">
+          <span class="icon" aria-hidden="true">📊</span>
+          <span>Progression</span>
+        </a>
+        <a class="nav-link" data-route-link="settings" href="#/settings">
+          <span class="icon" aria-hidden="true">⚙️</span>
+          <span>Paramètres</span>
+        </a>
       </nav>
     </div>
 
-    <div id="pretest-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="pretest-title">
-      <div class="modal-card">
-        <h3 id="pretest-title">Avant de lancer le test</h3>
-        <p>Lis bien chaque question jusqu’au bout : une réponse incomplète = faux ❌</p>
-        <p>Refais les tests tant que tu dépasses 3 fautes 🔁</p>
-        <p>Objectif examen : 35 bonnes réponses sur 40 💪</p>
-        <div class="modal-actions">
-          <button id="cancel-pretest-btn" type="button" class="ghost-btn">Annuler</button>
-          <button id="start-pretest-btn" type="button">Commencer</button>
+    <div id="pretest-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pretest-title">
+      <div class="overlay-card pretest-card">
+        <p class="section-kicker">Prêt ?</p>
+        <h3 id="pretest-title">Avant de lancer ce module</h3>
+        <p id="pretest-module-name" class="muted"></p>
+        <div class="rules">
+          <p>Lis bien jusqu’à la fin : une réponse incomplète = faux ❌</p>
+          <p>Refais le test tant que tu dépasses 3 fautes 🔁</p>
+          <p>Objectif exam : 35 bonnes réponses sur 40 💪</p>
+        </div>
+        <div class="overlay-actions">
+          <button id="cancel-pretest-btn" class="btn btn-secondary" type="button">Annuler</button>
+          <button id="start-test-btn" class="btn btn-primary pulse" type="button">Commencer le test</button>
         </div>
       </div>
     </div>
 
-    <div id="iframe-overlay" class="iframe-overlay hidden" aria-hidden="true">
-      <div class="iframe-header">
-        <button id="close-iframe-btn" type="button" class="ghost-btn">Retour</button>
-        <p id="iframe-title"></p>
-      </div>
+    <div id="iframe-screen" class="iframe-screen hidden" aria-hidden="true">
+      <header class="iframe-topbar">
+        <button id="iframe-back-btn" class="btn btn-secondary" type="button">Retour</button>
+        <p id="iframe-screen-title"></p>
+      </header>
       <iframe
-        id="test-iframe"
-        title="Module d'entraînement"
-        loading="lazy"
+        id="module-iframe"
+        title="Test code de la route"
+        loading="eager"
         allow="fullscreen"
-        referrerpolicy="no-referrer"
+        referrerpolicy="strict-origin-when-cross-origin"
       ></iframe>
     </div>
 
-    <div id="validation-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="validation-title">
-      <div class="modal-card">
-        <h3 id="validation-title">Validation du module</h3>
+    <div id="validation-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="validation-title">
+      <div class="overlay-card">
+        <p class="section-kicker">Validation interne</p>
+        <h3 id="validation-title">Confirme ton résultat</h3>
         <form id="validation-form">
-          <label class="checkbox-row">
-            <input id="validation-finished" type="checkbox" />
+          <label class="check-row">
+            <input id="check-finished" type="checkbox" />
             <span>J’ai terminé le test en entier</span>
           </label>
-          <label class="checkbox-row">
-            <input id="validation-score" type="checkbox" />
-            <span>J’ai obtenu au moins 35 bonnes réponses sur 40</span>
+          <label class="check-row">
+            <input id="check-score" type="checkbox" />
+            <span>J’ai eu au moins 35/40</span>
           </label>
-          <p id="validation-message" class="validation-message" aria-live="polite"></p>
-          <div class="modal-actions">
-            <button id="cancel-validation-btn" type="button" class="ghost-btn">Fermer</button>
-            <button type="submit">Valider ce module</button>
+
+          <p id="validation-feedback" class="feedback" aria-live="polite"></p>
+
+          <div class="overlay-actions">
+            <button id="cancel-validation-btn" class="btn btn-secondary" type="button">Fermer</button>
+            <button class="btn btn-primary" type="submit">Valider ce module</button>
           </div>
         </form>
       </div>
