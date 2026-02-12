@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="fr" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="description" content="Application PWA d'entraînement au code de la route français - tests uniquement." />
+    <title>CodeRevision - Tests Route</title>
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="./assets/icons/icon.svg" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="app-header">
+        <p class="eyebrow">CodeRevision</p>
+        <h1>Code de la route, mode tests</h1>
+        <p class="subtitle">Gratuit, mobile-first, zéro blabla. Tu t'entraînes, tu valides, tu progresses.</p>
+      </header>
+
+      <main class="views" aria-live="polite">
+        <section id="view-home" class="view active" data-view="home">
+          <div class="card hero-card">
+            <h2>Objectif examen</h2>
+            <p>35 bonnes réponses sur 40. On vise la régularité, pas la chance.</p>
+            <div class="hero-stats">
+              <div>
+                <span id="home-validated-count" class="stat-value">0/10</span>
+                <span class="stat-label">modules validés</span>
+              </div>
+              <div>
+                <span id="home-progress-percent" class="stat-value">0%</span>
+                <span class="stat-label">progression</span>
+              </div>
+              <div>
+                <span id="home-streak" class="stat-value">0</span>
+                <span class="stat-label">jours consécutifs</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Comment ça marche</h2>
+            <ul class="simple-list">
+              <li>Tu lances un module via iframe.</li>
+              <li>Tu reviens, puis tu valides avec le mini questionnaire obligatoire.</li>
+              <li>La progression est interne et stockée localement sur ton appareil.</li>
+            </ul>
+          </div>
+
+          <div class="ad-slot" aria-label="Espace publicitaire">
+            <p>Publicité (placeholder)</p>
+          </div>
+        </section>
+
+        <section id="view-tests" class="view" data-view="tests">
+          <div class="card">
+            <h2>Modules de tests</h2>
+            <p class="muted">Tests uniquement via iframe. Aucun cours intégré.</p>
+          </div>
+
+          <div id="tests-list" class="tests-list" aria-label="Liste des modules"></div>
+        </section>
+
+        <section id="view-progress" class="view" data-view="progress">
+          <div class="card">
+            <h2>Progression</h2>
+            <p id="progress-summary" class="progress-summary">0/10 validés - 0%</p>
+            <p class="disclaimer">Progression interne (non officielle)</p>
+          </div>
+
+          <div id="progress-list" class="progress-list"></div>
+        </section>
+
+        <section id="view-settings" class="view" data-view="settings">
+          <div class="card">
+            <h2>Paramètres</h2>
+
+            <label class="switch-row" for="theme-toggle">
+              <span>Mode sombre</span>
+              <input id="theme-toggle" type="checkbox" />
+            </label>
+
+            <button id="reset-progress-btn" class="danger-btn" type="button">Réinitialiser ma progression</button>
+          </div>
+
+          <div class="card">
+            <h2>Publicité</h2>
+            <div class="ad-slot compact" aria-label="Espace publicitaire">
+              <p>Placeholder pub - intégration future</p>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <nav class="bottom-nav" aria-label="Navigation principale">
+        <button class="nav-btn active" data-target="home" type="button">Accueil</button>
+        <button class="nav-btn" data-target="tests" type="button">Tests</button>
+        <button class="nav-btn" data-target="progress" type="button">Progression</button>
+        <button class="nav-btn" data-target="settings" type="button">Paramètres</button>
+      </nav>
+    </div>
+
+    <div id="pretest-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="pretest-title">
+      <div class="modal-card">
+        <h3 id="pretest-title">Avant de lancer le test</h3>
+        <p>Lis bien chaque question jusqu’au bout : une réponse incomplète = faux ❌</p>
+        <p>Refais les tests tant que tu dépasses 3 fautes 🔁</p>
+        <p>Objectif examen : 35 bonnes réponses sur 40 💪</p>
+        <div class="modal-actions">
+          <button id="cancel-pretest-btn" type="button" class="ghost-btn">Annuler</button>
+          <button id="start-pretest-btn" type="button">Commencer</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="iframe-overlay" class="iframe-overlay hidden" aria-hidden="true">
+      <div class="iframe-header">
+        <button id="close-iframe-btn" type="button" class="ghost-btn">Retour</button>
+        <p id="iframe-title"></p>
+      </div>
+      <iframe
+        id="test-iframe"
+        title="Module d'entraînement"
+        loading="lazy"
+        allow="fullscreen"
+        referrerpolicy="no-referrer"
+      ></iframe>
+    </div>
+
+    <div id="validation-modal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="validation-title">
+      <div class="modal-card">
+        <h3 id="validation-title">Validation du module</h3>
+        <form id="validation-form">
+          <label class="checkbox-row">
+            <input id="validation-finished" type="checkbox" />
+            <span>J’ai terminé le test en entier</span>
+          </label>
+          <label class="checkbox-row">
+            <input id="validation-score" type="checkbox" />
+            <span>J’ai obtenu au moins 35 bonnes réponses sur 40</span>
+          </label>
+          <p id="validation-message" class="validation-message" aria-live="polite"></p>
+          <div class="modal-actions">
+            <button id="cancel-validation-btn" type="button" class="ghost-btn">Fermer</button>
+            <button type="submit">Valider ce module</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
+
+    <script src="./app.js" defer></script>
+  </body>
+</html>

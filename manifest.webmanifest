@@ -1,0 +1,19 @@
+{
+  "name": "CodeRevision - Tests Route",
+  "short_name": "CodeRevision",
+  "description": "Application web mobile-first d'entraînement au code de la route français (tests uniquement).",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fffaf2",
+  "theme_color": "#0f172a",
+  "icons": [
+    {
+      "src": "./assets/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
