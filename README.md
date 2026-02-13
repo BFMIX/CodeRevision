@@ -74,7 +74,39 @@ Structure:
 
 ## Lancer localement
 
-Utiliser un serveur statique (nécessaire pour service worker):
+## Dev/Build/Checks
+
+Installer les dépendances:
+
+```bash
+npm install
+```
+
+Serveur de développement:
+
+```bash
+npm run dev
+```
+
+Build de production (minification JS/CSS incluse):
+
+```bash
+npm run build
+```
+
+Prévisualiser le build:
+
+```bash
+npm run preview
+```
+
+Vérification qualité complète (lint + format + build):
+
+```bash
+npm run check
+```
+
+Option alternative (serveur statique simple, hors toolchain Vite):
 
 ```bash
 python3 -m http.server 8080

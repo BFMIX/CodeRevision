@@ -1,0 +1,29 @@
+{
+  "name": "coderevision",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "check": "npm run lint && npm run format:check && npm run build"
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.20",
+    "eslint": "^8.57.1",
+    "postcss": "^8.4.49",
+    "prettier": "^3.4.2",
+    "vite": "^5.4.11",
+    "vite-plugin-static-copy": "^2.2.0"
+  },
+  "browserslist": [
+    ">0.5%",
+    "last 2 versions",
+    "not dead",
+    "iOS >= 13",
+    "Safari >= 13.1"
+  ]
+}

@@ -3,81 +3,186 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#0f1020" />
+    <meta name="theme-color" content="#0f172a" />
     <meta
       name="description"
-      content="Application Web & Mobile d'entraînement au code de la route français, tests uniquement."
+      content="Application Web & Mobile d'entraînement au code de la route français, gratuite et centrée sur les tests."
     />
-    <title>CodeRevision | Entraînement Tests</title>
+    <title>CodeRevision | Entraînement Code de la Route</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <link rel="manifest" href="./manifest.webmanifest" />
-    <link rel="icon" href="./assets/icons/icon.svg" type="image/svg+xml" />
-    <link rel="apple-touch-icon" href="./assets/icons/icon.svg" />
+    <link rel="icon" href="./assets/branding/app-icon.png" type="image/png" />
+    <link rel="apple-touch-icon" href="./assets/branding/app-icon.png" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="bg-orb orb-a" aria-hidden="true"></div>
-    <div class="bg-orb orb-b" aria-hidden="true"></div>
+    <div class="background-glow glow-a" aria-hidden="true"></div>
+    <div class="background-glow glow-b" aria-hidden="true"></div>
+    <div class="background-grid" aria-hidden="true"></div>
 
     <div class="app-shell">
-      <header class="topbar">
-        <div>
-          <p class="brand-pill">CodeRevision</p>
-          <h1>Code de la route</h1>
-          <p class="subtitle">Tests only. Rapide, clair, mobile, efficace.</p>
+      <header class="app-header">
+        <div class="header-brand">
+          <img
+            src="./assets/branding/logo-noText-nb.png"
+            alt="CodeRevision"
+            class="brand-icon-image"
+            width="72"
+            height="72"
+          />
+          <div class="brand-copy">
+            <div class="header-chip">CodeRevision</div>
+            <h1>Ta révision du code, claire et motivante</h1>
+            <p class="header-subtitle">
+              Choisis un thème, lance un entraînement et suis tes progrès pas à pas.
+            </p>
+          </div>
+          <img
+            src="./assets/branding/text-logo.png"
+            alt="CodeRevision"
+            class="brand-wordmark-image"
+            width="180"
+            height="180"
+          />
         </div>
+        <nav class="header-menu" aria-label="Menu principal">
+          <a class="nav-link-desktop" data-route-link="home" href="#/home">Accueil</a>
+          <a class="nav-link-desktop" data-route-link="tests" href="#/tests">Tests</a>
+          <a class="nav-link-desktop" data-route-link="progress" href="#/progress">Progression</a>
+          <a class="nav-link-desktop" data-route-link="settings" href="#/settings">Paramètres</a>
+        </nav>
       </header>
 
       <main id="app-main" class="app-main" aria-live="polite">
         <section class="view active" data-view="home">
           <article class="card hero-card">
-            <p class="hero-kicker">Objectif examen</p>
-            <h2>35/40 minimum. Tu répètes, tu montes.</h2>
-            <div class="hero-metrics">
-              <div class="metric-chip">
-                <p id="home-count" class="metric-value">0/10</p>
-                <p class="metric-label">modules validés</p>
+            <div class="hero-content">
+              <p class="section-eyebrow">Prêt pour l'examen ?</p>
+              <h2>Objectif : 35 bonnes réponses sur 40</h2>
+              <p class="hero-text">
+                Tu avances thème par thème avec une progression simple, lisible et encourageante.
+              </p>
+
+              <div class="hero-metrics">
+                <div class="metric-card">
+                  <p id="home-count" class="metric-value">0/10</p>
+                  <p class="metric-label">thèmes validés</p>
+                </div>
+                <div class="metric-card">
+                  <p id="home-percent" class="metric-value">0%</p>
+                  <p class="metric-label">progression</p>
+                </div>
               </div>
-              <div class="metric-chip">
-                <p id="home-percent" class="metric-value">0%</p>
-                <p class="metric-label">progression</p>
+
+              <div class="hero-actions">
+                <a class="btn btn-primary" href="#/tests">Commencer un entraînement</a>
+                <button id="home-continue-btn" class="btn btn-secondary" type="button">
+                  <span id="home-continue-label">Continuer</span>
+                </button>
               </div>
+              <p id="home-next-hint" class="hint-text"></p>
             </div>
-            <a class="btn btn-primary" href="#/tests">Commencer mes tests</a>
+
+            <div class="hero-visual" aria-hidden="true">
+              <img src="./assets/branding/background.png" alt="" class="hero-bg-image" />
+              <img src="./assets/branding/logo-with-text.png" alt="" class="hero-logo-image" />
+            </div>
           </article>
 
-          <article class="card">
-            <h3>Mode d'emploi</h3>
-            <ul class="clean-list">
-              <li>Ouvre un module puis fais le test en iframe.</li>
-              <li>Au retour, valide ton résultat avec le mini check.</li>
-              <li>Ta progression reste locale sur cet appareil.</li>
-            </ul>
-          </article>
-
-          <article class="card ad-card" aria-label="Espace publicitaire">
-            <p>Publicité - placeholder discret</p>
-          </article>
+          <div class="home-grid">
+            <article class="card">
+              <div class="section-title">
+                <span class="section-icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="12" cy="12" r="9"></circle>
+                    <path d="M12 7v6l4 2"></path>
+                  </svg>
+                </span>
+                <h3>Comment ça fonctionne</h3>
+              </div>
+              <ul class="clean-list">
+                <li>Choisis un thème et lance le test.</li>
+                <li>À ton retour, valide ton résultat en 2 clics.</li>
+                <li>Ton suivi reste disponible sur cet appareil.</li>
+              </ul>
+            </article>
+          </div>
         </section>
 
         <section class="view" data-view="tests">
-          <article class="card">
-            <p class="section-kicker">🧪 Tests</p>
-            <h2>Choisis ton module</h2>
-            <p class="muted">Chaque module s'ouvre en plein écran dans une vue iframe dédiée.</p>
-          </article>
+          <div class="card tests-header-card">
+            <div class="section-title">
+              <h2>Tests par thème</h2>
+            </div>
+            <p class="section-text">Choisis un thème et lance un test.</p>
+
+            <div class="test-tools">
+              <label class="search-field" for="tests-search">
+                <span class="search-icon" aria-hidden="true">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.9"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <circle cx="11" cy="11" r="7"></circle>
+                    <path d="m20 20-3.5-3.5"></path>
+                  </svg>
+                </span>
+                <input
+                  id="tests-search"
+                  type="search"
+                  placeholder="Rechercher un thème"
+                  autocomplete="off"
+                />
+              </label>
+
+              <div class="filter-chips" role="tablist" aria-label="Filtrer les thèmes">
+                <button class="filter-chip active" type="button" data-filter="all">Tous</button>
+                <button class="filter-chip" type="button" data-filter="todo">À faire</button>
+                <button class="filter-chip" type="button" data-filter="done">Validés</button>
+              </div>
+            </div>
+            <p id="tests-results-meta" class="hint-text"></p>
+          </div>
 
           <div id="tests-list" class="tests-grid"></div>
         </section>
 
         <section class="view" data-view="progress">
           <article class="card progress-card">
-            <p class="section-kicker">📊 Progression</p>
+            <div class="section-title">
+              <span class="section-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M5 19V9"></path>
+                  <path d="M12 19V5"></path>
+                  <path d="M19 19v-7"></path>
+                </svg>
+              </span>
+              <h2>Progression</h2>
+            </div>
+
             <div class="progress-hero">
               <div class="ring-wrap">
                 <svg class="progress-ring" viewBox="0 0 140 140" aria-hidden="true">
@@ -89,10 +194,10 @@
                   <p id="ring-count" class="ring-count">0/10</p>
                 </div>
               </div>
-              <div>
-                <h2>Ton suivi interne</h2>
-                <p id="progress-summary" class="muted">0 module validé pour l'instant.</p>
-                <p class="disclaimer">Progression interne (non officielle)</p>
+
+              <div class="progress-copy">
+                <p id="progress-summary" class="section-text">Aucun thème validé pour l'instant.</p>
+                <p class="disclaimer">Progression (non officielle)</p>
               </div>
             </div>
           </article>
@@ -102,66 +207,147 @@
 
         <section class="view" data-view="settings">
           <article class="card">
-            <p class="section-kicker">⚙️ Paramètres</p>
-            <h2>Personnalisation</h2>
+            <div class="section-title">
+              <span class="section-icon" aria-hidden="true">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <circle cx="12" cy="12" r="3"></circle>
+                  <path
+                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.3.47.65.6 1 .08.32.2.65.33 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33c-.29.18-.53.43-.69.67Z"
+                  ></path>
+                </svg>
+              </span>
+              <h2>Paramètres</h2>
+            </div>
 
             <label class="switch-row" for="darkmode-toggle">
-              <span>Mode sombre</span>
+              <span class="switch-label">Mode sombre</span>
               <span class="switch">
                 <input id="darkmode-toggle" type="checkbox" />
                 <span class="switch-slider"></span>
               </span>
             </label>
 
-            <button id="reset-btn" class="btn btn-danger" type="button">Réinitialiser ma progression</button>
-          </article>
-
-          <article class="card ad-card" aria-label="Espace publicitaire">
-            <p>Publicité - emplacement futur</p>
+            <button id="reset-btn" class="btn btn-danger" type="button">
+              Réinitialiser ma progression
+            </button>
           </article>
         </section>
       </main>
 
       <nav class="bottom-nav" aria-label="Navigation principale">
         <a class="nav-link" data-route-link="home" href="#/home">
-          <span class="icon" aria-hidden="true">🏠</span>
+          <span class="icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M3 10.5 12 3l9 7.5"></path>
+              <path d="M5 9.5V21h14V9.5"></path>
+            </svg>
+          </span>
           <span>Accueil</span>
         </a>
         <a class="nav-link" data-route-link="tests" href="#/tests">
-          <span class="icon" aria-hidden="true">🧪</span>
+          <span class="icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M9 3h6"></path>
+              <path d="M10 3v5l-5 8a4 4 0 0 0 3.4 6h7.2A4 4 0 0 0 19 16l-5-8V3"></path>
+              <path d="M8.5 14h7"></path>
+            </svg>
+          </span>
           <span>Tests</span>
         </a>
         <a class="nav-link" data-route-link="progress" href="#/progress">
-          <span class="icon" aria-hidden="true">📊</span>
+          <span class="icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <path d="M5 19V9"></path>
+              <path d="M12 19V5"></path>
+              <path d="M19 19v-7"></path>
+            </svg>
+          </span>
           <span>Progression</span>
         </a>
         <a class="nav-link" data-route-link="settings" href="#/settings">
-          <span class="icon" aria-hidden="true">⚙️</span>
+          <span class="icon" aria-hidden="true">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.9"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <circle cx="12" cy="12" r="3"></circle>
+              <path
+                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.3.47.65.6 1 .08.32.2.65.33 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33c-.29.18-.53.43-.69.67Z"
+              ></path>
+            </svg>
+          </span>
           <span>Paramètres</span>
         </a>
       </nav>
     </div>
 
-    <div id="pretest-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="pretest-title">
+    <div
+      id="pretest-modal"
+      class="overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="pretest-title"
+    >
       <div class="overlay-card pretest-card">
-        <p class="section-kicker">Prêt ?</p>
-        <h3 id="pretest-title">Avant de lancer ce module</h3>
-        <p id="pretest-module-name" class="muted"></p>
+        <p class="section-eyebrow">Avant de commencer</p>
+        <h3 id="pretest-title">Rappels rapides</h3>
+        <p id="pretest-module-name" class="muted-text"></p>
+
         <div class="rules">
-          <p>Lis bien jusqu’à la fin : une réponse incomplète = faux ❌</p>
-          <p>Refais le test tant que tu dépasses 3 fautes 🔁</p>
-          <p>Objectif exam : 35 bonnes réponses sur 40 💪</p>
+          <p>Lis bien chaque question jusqu’au bout : une réponse incomplète = faux ❌</p>
+          <p>Refais les tests tant que tu dépasses 3 fautes 🔁</p>
+          <p>Objectif examen : 35 bonnes réponses sur 40 💪</p>
         </div>
+
         <div class="overlay-actions">
           <button id="cancel-pretest-btn" class="btn btn-secondary" type="button">Annuler</button>
-          <button id="start-test-btn" class="btn btn-primary pulse" type="button">Commencer le test</button>
+          <button id="start-test-btn" class="btn btn-primary pulse" type="button">
+            Commencer le test
+          </button>
         </div>
       </div>
     </div>
 
     <div id="iframe-screen" class="iframe-screen hidden" aria-hidden="true">
       <header class="iframe-topbar">
-        <button id="iframe-back-btn" class="btn btn-secondary" type="button">Retour</button>
+        <div class="iframe-actions-row">
+          <button id="iframe-back-btn" class="btn btn-secondary" type="button">Retour</button>
+          <button id="iframe-validate-btn" class="btn btn-primary" type="button">
+            Valider ce test
+          </button>
+        </div>
         <p id="iframe-screen-title"></p>
       </header>
       <iframe
@@ -173,10 +359,16 @@
       ></iframe>
     </div>
 
-    <div id="validation-modal" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="validation-title">
+    <div
+      id="validation-modal"
+      class="overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="validation-title"
+    >
       <div class="overlay-card">
-        <p class="section-kicker">Validation interne</p>
-        <h3 id="validation-title">Confirme ton résultat</h3>
+        <p class="section-eyebrow">Validation</p>
+        <h3 id="validation-title">Valide ton test</h3>
         <form id="validation-form">
           <label class="check-row">
             <input id="check-finished" type="checkbox" />
@@ -190,8 +382,10 @@
           <p id="validation-feedback" class="feedback" aria-live="polite"></p>
 
           <div class="overlay-actions">
-            <button id="cancel-validation-btn" class="btn btn-secondary" type="button">Fermer</button>
-            <button class="btn btn-primary" type="submit">Valider ce module</button>
+            <button id="cancel-validation-btn" class="btn btn-secondary" type="button">
+              Fermer
+            </button>
+            <button class="btn btn-primary" type="submit">Valider ce thème</button>
           </div>
         </form>
       </div>
@@ -199,6 +393,6 @@
 
     <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
-    <script src="./app.js" defer></script>
+    <script type="module" src="./app.js"></script>
   </body>
 </html>

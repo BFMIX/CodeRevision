@@ -1,11 +1,16 @@
-const CACHE_NAME = "code-revision-shell-v2";
+const CACHE_NAME = "code-revision-shell-v5";
 const APP_SHELL = [
   "./",
   "./index.html",
-  "./styles.css",
-  "./app.js",
   "./manifest.webmanifest",
-  "./assets/icons/icon.svg",
+  "./assets/branding/app-icon.png",
+  "./assets/branding/app-icon-192.png",
+  "./assets/branding/app-icon-512.png",
+  "./assets/branding/logo-noText-nb.png",
+  "./assets/branding/logo-plus-text-nb.png",
+  "./assets/branding/logo-with-text.png",
+  "./assets/branding/text-logo.png",
+  "./assets/branding/background.png",
 ];
 
 self.addEventListener("install", (event) => {
