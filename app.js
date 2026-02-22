@@ -3,118 +3,167 @@ const MODULES = [
     id: 1,
     name: "Conducteur",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=1",
+    icon: "directions_car",
   },
   {
     id: 2,
     name: "Réglementation générale",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=2",
+    icon: "gavel",
   },
   {
     id: 3,
     name: "Respect de l’environnement",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=3",
+    icon: "eco",
   },
   {
     id: 4,
     name: "Circulation routière",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=4",
+    icon: "alt_route",
   },
   {
     id: 5,
     name: "Mécanique",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=5",
+    icon: "build",
   },
   {
     id: 6,
     name: "Quitter et s’installer dans le véhicule",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=6",
+    icon: "airline_seat_recline_normal",
   },
   {
     id: 7,
     name: "Premiers secours",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=7",
+    icon: "medical_services",
   },
   {
     id: 8,
     name: "La route",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=8",
+    icon: "signpost",
   },
   {
     id: 9,
     name: "Équipements de sécurité",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=9",
+    icon: "health_and_safety",
   },
   {
     id: 10,
     name: "Autres usagers",
     url: "https://zerotracas.permisecole.com/qcm-indexSpeMma.php?mma_sId=10",
+    icon: "groups",
   },
 ];
 
-const ROUTES = ["home", "tests", "progress", "settings"];
-const STORAGE_KEY = "codeRevision.local.ui.v2";
-const RING_CIRCUMFERENCE = 326.73;
-
-const MODULE_ICONS = {
-  1: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="7"></circle><circle cx="12" cy="12" r="2"></circle><path d="M12 5v2M12 17v2M5 12h2M17 12h2"></path></svg>',
-  2: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h10a2 2 0 0 1 2 2v14l-4-2-4 2-4-2-4 2V6a2 2 0 0 1 2-2h2"></path><path d="M8 8h6M8 12h6"></path></svg>',
-  3: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c4 3 6 5.4 6 8.3A6 6 0 1 1 6 11.3C6 8.4 8 6 12 3Z"></path><path d="M9 14c.9 1 2 1.5 3 1.5s2.1-.5 3-1.5"></path></svg>',
-  4: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20c1.5-6 4-9 8-9s6.5 3 8 9"></path><path d="M12 11V4"></path><path d="M12 4l-2 2M12 4l2 2"></path><path d="M12 20v-5"></path></svg>',
-  5: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6 6 14"></path><path d="M3 8l3-3 4 4-3 3z"></path><path d="M14 10l7 7-3 3-7-7"></path></svg>',
-  6: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="14" height="16" rx="2"></rect><path d="M9 7h6M9 11h6M12 14v4"></path></svg>',
-  7: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="5" width="16" height="14" rx="2"></rect><path d="M12 8v8M8 12h8"></path></svg>',
-  8: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 4h4v16H6zM14 7h4v13h-4z"></path><path d="M10 8h4"></path></svg>',
-  9: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v5c0 4.2 2.8 8 7 10 4.2-2 7-5.8 7-10V6l-7-3Z"></path><path d="m9.5 12 1.6 1.6 3.4-3.4"></path></svg>',
-  10: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="9" r="3"></circle><circle cx="16" cy="9" r="3"></circle><path d="M3 20c.8-3 2.8-5 5-5s4.2 2 5 5"></path><path d="M11 20c.8-2.4 2.4-4 5-4s4.2 1.6 5 4"></path></svg>',
+const MODULE_VISUALS = {
+  1: { bg: "rgba(59,130,246,0.18)", color: "#6ab8ff", border: "rgba(59,130,246,0.34)" },
+  2: { bg: "rgba(139,92,246,0.18)", color: "#b99dff", border: "rgba(139,92,246,0.34)" },
+  3: { bg: "rgba(16,185,129,0.18)", color: "#62d8a5", border: "rgba(16,185,129,0.34)" },
+  4: { bg: "rgba(14,165,233,0.18)", color: "#62d4ff", border: "rgba(14,165,233,0.34)" },
+  5: { bg: "rgba(245,158,11,0.18)", color: "#f8ca76", border: "rgba(245,158,11,0.34)" },
+  6: { bg: "rgba(248,113,113,0.18)", color: "#fca0a0", border: "rgba(248,113,113,0.34)" },
+  7: { bg: "rgba(236,72,153,0.18)", color: "#f79ccc", border: "rgba(236,72,153,0.34)" },
+  8: { bg: "rgba(56,189,248,0.18)", color: "#7ad9ff", border: "rgba(56,189,248,0.34)" },
+  9: { bg: "rgba(34,197,94,0.18)", color: "#75e1a1", border: "rgba(34,197,94,0.34)" },
+  10: { bg: "rgba(244,114,182,0.18)", color: "#f5a6d0", border: "rgba(244,114,182,0.34)" },
 };
 
+const ROUTES = ["home", "tests", "progress", "settings"];
+const ROUTE_META = {
+  home: { kicker: "Session du jour", title: "Tableau de bord" },
+  tests: { kicker: "Entraînement", title: "Séries de tests" },
+  progress: { kicker: "Suivi", title: "Progression" },
+  settings: { kicker: "Préférences", title: "Paramètres" },
+};
+
+const PRETEST_STEPS = [
+  "Lis bien chaque question jusqu’au bout",
+  "Si tu oublies une bonne case, c’est faux ❌",
+  "Refais tant que tu dépasses 3 fautes 🔁",
+  "Objectif examen : 35/40 💪",
+];
+
+const MASCOT_QUESTIONS = ["As-tu terminé le test en entier ?", "As-tu eu au moins 35/40 ?"];
+
+const STORAGE_KEY = "codeRevision.stitch.ui.v1";
+const LEGACY_KEY = "codeRevision.local.ui.v2";
+const RING_CIRCUMFERENCE = 339.29;
+
 const state = loadState();
-let selectedModuleId = null;
-let iframeModuleId = null;
 let testsQuery = "";
-let testsFilter = "all";
-let toastTimeout = null;
+let selectedModuleId = null;
+let activeTestModuleId = null;
+let pretestStep = 0;
+let mascotStep = 0;
+let mascotAnswers = [false, false];
+let mascotResult = false;
+let toastTimer = null;
 
 const views = Array.from(document.querySelectorAll(".view"));
-const navLinks = Array.from(document.querySelectorAll("[data-route-link]"));
+const routeLinks = Array.from(document.querySelectorAll(".route-link[data-route-link]"));
 
-const testsList = document.getElementById("tests-list");
-const testsSearch = document.getElementById("tests-search");
-const filterChips = Array.from(document.querySelectorAll(".filter-chip"));
-const testsResultsMeta = document.getElementById("tests-results-meta");
+const topbarKicker = document.getElementById("topbar-kicker");
+const topbarTitle = document.getElementById("topbar-title");
+const headerSettingsBtn = document.getElementById("header-settings-btn");
 
-const progressList = document.getElementById("progress-list");
-const homeCount = document.getElementById("home-count");
-const homePercent = document.getElementById("home-percent");
+const homeGreeting = document.getElementById("home-greeting");
+const homeSubtitle = document.getElementById("home-subtitle");
+const homeProgressText = document.getElementById("home-progress-text");
+const homeRingFill = document.getElementById("home-ring-fill");
+const homeRingValue = document.getElementById("home-ring-value");
 const homeContinueBtn = document.getElementById("home-continue-btn");
-const homeContinueLabel = document.getElementById("home-continue-label");
-const homeNextHint = document.getElementById("home-next-hint");
+const homeActivityMain = document.getElementById("home-activity-main");
+const homeActivitySub = document.getElementById("home-activity-sub");
+const homeStreak = document.getElementById("home-streak");
+const homeLastDate = document.getElementById("home-last-date");
 
-const ringFill = document.getElementById("ring-fill");
-const ringPercent = document.getElementById("ring-percent");
-const ringCount = document.getElementById("ring-count");
-const progressSummary = document.getElementById("progress-summary");
+const testsSearch = document.getElementById("tests-search");
+const testsMeta = document.getElementById("tests-meta");
+const testsModules = document.getElementById("tests-modules");
 
-const darkModeToggle = document.getElementById("darkmode-toggle");
-const resetBtn = document.getElementById("reset-btn");
+const progressScoreValue = document.getElementById("progress-score-value");
+const progressBadge = document.getElementById("progress-badge");
+const progressBarFill = document.getElementById("progress-bar-fill");
+const progressMessage = document.getElementById("progress-message");
+const progressFraction = document.getElementById("progress-fraction");
+const progressList = document.getElementById("progress-list");
+
+const settingsNameInput = document.getElementById("settings-name-input");
+const settingsNameSave = document.getElementById("settings-name-save");
+const darkmodeToggle = document.getElementById("darkmode-toggle");
+const resetProgressBtn = document.getElementById("reset-progress-btn");
+
+const nameModal = document.getElementById("name-modal");
+const nameInput = document.getElementById("name-input");
+const nameSaveBtn = document.getElementById("name-save-btn");
 
 const pretestModal = document.getElementById("pretest-modal");
 const pretestModuleName = document.getElementById("pretest-module-name");
-const cancelPretestBtn = document.getElementById("cancel-pretest-btn");
-const startTestBtn = document.getElementById("start-test-btn");
+const pretestStepIndex = document.getElementById("pretest-step-index");
+const pretestStepCard = document.getElementById("pretest-step-card");
+const pretestDots = document.getElementById("pretest-dots");
+const pretestCancelBtn = document.getElementById("pretest-cancel-btn");
+const pretestNextBtn = document.getElementById("pretest-next-btn");
 
-const iframeScreen = document.getElementById("iframe-screen");
-const iframeBackBtn = document.getElementById("iframe-back-btn");
-const iframeValidateBtn = document.getElementById("iframe-validate-btn");
-const iframeScreenTitle = document.getElementById("iframe-screen-title");
-const moduleIframe = document.getElementById("module-iframe");
+const mascotModal = document.getElementById("mascot-modal");
+const mascotModuleName = document.getElementById("mascot-module-name");
+const mascotQuestion = document.getElementById("mascot-question");
+const mascotActions = document.getElementById("mascot-actions");
+const mascotCloseBtn = document.getElementById("mascot-close-btn");
+const mascotFeedback = document.getElementById("mascot-feedback");
 
-const validationModal = document.getElementById("validation-modal");
-const validationForm = document.getElementById("validation-form");
-const cancelValidationBtn = document.getElementById("cancel-validation-btn");
-const checkFinished = document.getElementById("check-finished");
-const checkScore = document.getElementById("check-score");
-const validationFeedback = document.getElementById("validation-feedback");
+const testScreen = document.getElementById("test-screen");
+const testBackBtn = document.getElementById("test-back-btn");
+const testRefreshBtn = document.getElementById("test-refresh-btn");
+const testModuleTitle = document.getElementById("test-module-title");
+const testProgressFill = document.getElementById("test-progress-fill");
+const testFrame = document.getElementById("test-frame");
 
 const toast = document.getElementById("toast");
 
@@ -123,34 +172,60 @@ initialize();
 function initialize() {
   hydrateModules();
   applyTheme(state.darkMode);
-  darkModeToggle.checked = state.darkMode;
+  darkmodeToggle.checked = state.darkMode;
   attachEvents();
   renderAll();
   ensureHashRoute();
   syncRoute();
   registerServiceWorker();
+
+  if (!state.userName) {
+    openNameModal();
+  }
 }
 
 function createDefaultState() {
   return {
-    darkMode: false,
+    userName: "",
+    darkMode: true,
     modules: {},
+    lastActivity: null,
   };
 }
 
 function loadState() {
   const fallback = createDefaultState();
-  const raw = localStorage.getItem(STORAGE_KEY);
+  const currentRaw = localStorage.getItem(STORAGE_KEY);
 
-  if (!raw) {
+  if (currentRaw) {
+    try {
+      const parsed = JSON.parse(currentRaw);
+      return {
+        userName: typeof parsed.userName === "string" ? parsed.userName : "",
+        darkMode: typeof parsed.darkMode === "boolean" ? parsed.darkMode : true,
+        modules: parsed.modules && typeof parsed.modules === "object" ? parsed.modules : {},
+        lastActivity: parsed.lastActivity || null,
+      };
+    } catch (_error) {
+      return fallback;
+    }
+  }
+
+  const legacyRaw = localStorage.getItem(LEGACY_KEY);
+  if (!legacyRaw) {
     return fallback;
   }
 
   try {
-    const parsed = JSON.parse(raw);
+    const legacy = JSON.parse(legacyRaw);
     return {
-      darkMode: typeof parsed.darkMode === "boolean" ? parsed.darkMode : parsed.theme === "dark",
-      modules: parsed.modules || {},
+      userName: "",
+      darkMode:
+        typeof legacy.darkMode === "boolean"
+          ? legacy.darkMode
+          : legacy.theme === "dark" || fallback.darkMode,
+      modules: legacy.modules && typeof legacy.modules === "object" ? legacy.modules : {},
+      lastActivity: null,
     };
   } catch (_error) {
     return fallback;
@@ -161,16 +236,16 @@ function persistState() {
   localStorage.setItem(
     STORAGE_KEY,
     JSON.stringify({
+      userName: state.userName,
       darkMode: state.darkMode,
       modules: state.modules,
+      lastActivity: state.lastActivity,
     })
   );
 }
 
 function hydrateModules() {
-  MODULES.forEach((module) => {
-    ensureModuleState(module.id);
-  });
+  MODULES.forEach((module) => ensureModuleState(module.id));
   persistState();
 }
 
@@ -197,49 +272,23 @@ function ensureModuleState(moduleId) {
 function attachEvents() {
   window.addEventListener("hashchange", syncRoute);
 
-  testsList.addEventListener("click", (event) => {
-    const target = event.target;
-    if (!(target instanceof HTMLElement)) {
-      return;
-    }
+  routeLinks.forEach((link) => {
+    link.addEventListener("click", () => {
+      if (nameModal.classList.contains("hidden")) {
+        return;
+      }
 
-    const actionElement = target.closest("[data-action]");
-    if (!(actionElement instanceof HTMLElement)) {
-      return;
-    }
-
-    const moduleId = Number(actionElement.dataset.moduleId);
-    if (!Number.isFinite(moduleId)) {
-      return;
-    }
-
-    const action = actionElement.dataset.action;
-    if (action === "open") {
-      openPretest(moduleId);
-    }
-
-    if (action === "validate") {
-      openValidation(moduleId);
-    }
-  });
-
-  testsSearch.addEventListener("input", () => {
-    testsQuery = testsSearch.value.trim();
-    renderTests();
-  });
-
-  filterChips.forEach((chip) => {
-    chip.addEventListener("click", () => {
-      testsFilter = chip.dataset.filter || "all";
-      filterChips.forEach((button) => {
-        button.classList.toggle("active", button === chip);
-      });
-      renderTests();
+      if (!state.userName) {
+        openNameModal();
+      }
     });
   });
 
+  headerSettingsBtn.addEventListener("click", () => setRoute("settings"));
+
   homeContinueBtn.addEventListener("click", () => {
     const nextModule = getNextModule();
+
     if (!nextModule) {
       setRoute("progress");
       return;
@@ -249,131 +298,156 @@ function attachEvents() {
     openPretest(nextModule.id);
   });
 
-  cancelPretestBtn.addEventListener("click", closePretest);
+  testsSearch.addEventListener("input", () => {
+    testsQuery = testsSearch.value.trim();
+    renderTests();
+  });
 
-  startTestBtn.addEventListener("click", () => {
-    if (!selectedModuleId) {
+  testsModules.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) {
       return;
     }
 
-    closePretest();
-    openIframeScreen(selectedModuleId);
-  });
-
-  iframeBackBtn.addEventListener("click", () => {
-    const moduleId = iframeModuleId;
-    closeIframeScreen();
-    if (moduleId) {
-      openValidation(moduleId);
-    }
-  });
-
-  iframeValidateBtn.addEventListener("click", () => {
-    const moduleId = iframeModuleId;
-    closeIframeScreen();
-    if (moduleId) {
-      openValidation(moduleId);
-    }
-  });
-
-  cancelValidationBtn.addEventListener("click", closeValidation);
-
-  validationForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-
-    if (!selectedModuleId) {
+    const launchButton = target.closest("[data-action='launch']");
+    if (!(launchButton instanceof HTMLElement)) {
       return;
     }
 
-    const moduleState = ensureModuleState(selectedModuleId);
-
-    if (checkFinished.checked && checkScore.checked) {
-      moduleState.validated = true;
-      moduleState.validatedAt = new Date().toISOString();
-      persistState();
-      renderAll();
-      closeValidation();
-      showToast("Thème validé");
-      setRoute("progress");
+    const moduleId = Number(launchButton.dataset.moduleId);
+    if (!Number.isFinite(moduleId)) {
       return;
     }
 
-    if (!moduleState.validated) {
-      moduleState.validated = false;
-      moduleState.validatedAt = null;
-      persistState();
-      renderAll();
-    }
-
-    validationFeedback.textContent = "Tu peux le refaire 💪";
+    openPretest(moduleId);
   });
 
-  darkModeToggle.addEventListener("change", () => {
-    state.darkMode = darkModeToggle.checked;
+  settingsNameSave.addEventListener("click", () => {
+    saveUserName(settingsNameInput.value);
+  });
+
+  darkmodeToggle.addEventListener("change", () => {
+    state.darkMode = darkmodeToggle.checked;
     applyTheme(state.darkMode);
     persistState();
     showToast(state.darkMode ? "Mode sombre activé" : "Mode clair activé");
   });
 
-  resetBtn.addEventListener("click", () => {
-    const confirmed = window.confirm("Supprimer toute ta progression sur cet appareil ?");
-
+  resetProgressBtn.addEventListener("click", () => {
+    const confirmed = window.confirm("Réinitialiser la progression sur cet appareil ?");
     if (!confirmed) {
       return;
     }
 
-    localStorage.removeItem(STORAGE_KEY);
-    state.modules = {};
-    hydrateModules();
+    MODULES.forEach((module) => {
+      const moduleState = ensureModuleState(module.id);
+      moduleState.validated = false;
+      moduleState.validatedAt = null;
+    });
+
+    state.lastActivity = null;
+    persistState();
     renderAll();
     showToast("Progression réinitialisée");
   });
 
-  pretestModal.addEventListener("click", (event) => {
-    if (event.target === pretestModal) {
-      closePretest();
+  nameSaveBtn.addEventListener("click", () => {
+    saveUserName(nameInput.value, true);
+  });
+
+  nameInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      saveUserName(nameInput.value, true);
     }
   });
 
-  validationModal.addEventListener("click", (event) => {
-    if (event.target === validationModal) {
-      closeValidation();
+  pretestCancelBtn.addEventListener("click", closePretest);
+  pretestNextBtn.addEventListener("click", handlePretestNext);
+
+  mascotActions.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) {
+      return;
     }
+
+    const answerButton = target.closest("[data-answer]");
+    if (!(answerButton instanceof HTMLElement)) {
+      return;
+    }
+
+    const answer = answerButton.dataset.answer;
+    if (!answer) {
+      return;
+    }
+
+    handleMascotAnswer(answer === "yes");
   });
+
+  mascotCloseBtn.addEventListener("click", () => {
+    closeMascotModal();
+    setRoute(mascotResult ? "progress" : "tests");
+  });
+
+  testBackBtn.addEventListener("click", () => {
+    closeTestScreen(true);
+  });
+
+  testRefreshBtn.addEventListener("click", refreshTestFrame);
 
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape") {
       return;
     }
 
-    if (!iframeScreen.classList.contains("hidden")) {
-      const moduleId = iframeModuleId;
-      closeIframeScreen();
-      if (moduleId) {
-        openValidation(moduleId);
-      }
+    if (!testScreen.classList.contains("hidden")) {
+      closeTestScreen(true);
       return;
     }
 
     if (!pretestModal.classList.contains("hidden")) {
       closePretest();
-      return;
-    }
-
-    if (!validationModal.classList.contains("hidden")) {
-      closeValidation();
     }
   });
 }
 
+function saveUserName(rawValue, fromWelcome = false) {
+  const cleaned = normalizeUserName(rawValue);
+
+  if (!cleaned) {
+    showToast("Ajoute ton prénom pour continuer");
+    return;
+  }
+
+  state.userName = cleaned;
+  persistState();
+  renderAll();
+
+  if (fromWelcome) {
+    closeNameModal();
+  }
+
+  settingsNameInput.value = cleaned;
+  showToast(`Bienvenue ${cleaned} !`);
+}
+
+function normalizeUserName(value) {
+  const trimmed = value.trim().replace(/\s+/g, " ");
+  if (!trimmed) {
+    return "";
+  }
+
+  const lower = trimmed.toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
+
 function ensureHashRoute() {
-  const route = routeFromHash();
+  const route = getRouteFromHash();
   if (!route) {
     setRoute("home", true);
   }
 }
 
-function routeFromHash() {
+function getRouteFromHash() {
   const raw = window.location.hash.replace(/^#\/?/, "").split("?")[0];
   return ROUTES.includes(raw) ? raw : null;
 }
@@ -396,160 +470,358 @@ function setRoute(route, replace = false) {
 }
 
 function syncRoute() {
-  const activeRoute = routeFromHash() || "home";
+  const activeRoute = getRouteFromHash() || "home";
 
   views.forEach((view) => {
     view.classList.toggle("active", view.dataset.view === activeRoute);
   });
 
-  navLinks.forEach((link) => {
+  routeLinks.forEach((link) => {
     link.classList.toggle("active", link.dataset.routeLink === activeRoute);
   });
+
+  const routeMeta = ROUTE_META[activeRoute];
+  if (routeMeta) {
+    topbarKicker.textContent = routeMeta.kicker;
+    topbarTitle.textContent = routeMeta.title;
+  }
 }
 
 function renderAll() {
   renderHome();
   renderTests();
   renderProgress();
+  renderSettings();
 }
 
 function renderHome() {
+  const userName = getUserName();
   const validatedCount = getValidatedCount();
-  const percent = getProgressPercent(validatedCount);
+  const progressPercent = getProgressPercent(validatedCount);
   const nextModule = getNextModule();
 
-  homeCount.textContent = `${validatedCount}/${MODULES.length}`;
-  homePercent.textContent = `${percent}%`;
+  homeGreeting.textContent = `Salut ${userName} 👋`;
 
-  if (!nextModule) {
-    homeContinueLabel.textContent = "Voir ma progression";
-    homeContinueBtn.disabled = false;
-    homeNextHint.textContent = "Excellent travail, tous les thèmes sont validés.";
-    return;
+  if (nextModule) {
+    homeSubtitle.textContent = `Prêt pour le prochain thème : ${nextModule.name} ?`;
+    homeContinueBtn.textContent = `Reprendre`;
+    homeActivityMain.textContent = `Prochain module conseillé : ${nextModule.id}. ${nextModule.name}`;
+    homeActivitySub.textContent = "Lance ta prochaine série et garde le rythme.";
+  } else {
+    homeSubtitle.textContent = "Tu as validé tous les modules, excellent travail.";
+    homeContinueBtn.textContent = "Voir ma progression";
+    homeActivityMain.textContent = "Tous les modules sont validés";
+    homeActivitySub.textContent = "Tu peux relancer des séries pour consolider tes acquis.";
   }
 
-  homeContinueLabel.textContent = `Continuer : ${nextModule.name}`;
-  homeContinueBtn.disabled = false;
-  homeNextHint.textContent = "Prochain thème recommandé pour avancer.";
+  homeProgressText.textContent = `${progressPercent}% du code complété`;
+  homeRingValue.textContent = `${progressPercent}%`;
+  homeRingFill.style.strokeDashoffset = String(RING_CIRCUMFERENCE * (1 - progressPercent / 100));
+
+  homeStreak.textContent = String(getStreakDays());
+  homeLastDate.textContent = state.lastActivity ? formatDate(state.lastActivity) : "-";
 }
 
 function renderTests() {
-  testsList.innerHTML = "";
+  testsModules.innerHTML = "";
 
-  const filteredModules = MODULES.filter((module) => {
-    const moduleState = ensureModuleState(module.id);
-    const matchesQuery = normalizedText(module.name).includes(normalizedText(testsQuery));
+  const filtered = MODULES.filter((module) =>
+    normalizeSearch(`${module.id} ${module.name}`).includes(normalizeSearch(testsQuery))
+  );
 
-    if (!matchesQuery) {
-      return false;
-    }
+  testsMeta.textContent = `${filtered.length} module${filtered.length > 1 ? "s" : ""} affiché${filtered.length > 1 ? "s" : ""}`;
 
-    if (testsFilter === "done") {
-      return moduleState.validated;
-    }
-
-    if (testsFilter === "todo") {
-      return !moduleState.validated;
-    }
-
-    return true;
-  });
-
-  testsResultsMeta.textContent = `${filteredModules.length} thème${filteredModules.length > 1 ? "s" : ""} affiché${filteredModules.length > 1 ? "s" : ""}.`;
-
-  if (filteredModules.length === 0) {
-    const emptyState = document.createElement("article");
-    emptyState.className = "module-card";
-    emptyState.innerHTML = `
-      <p class="module-title">Aucun thème trouvé</p>
-      <p class="module-sub">Essaie un autre mot-clé ou change le filtre.</p>
-    `;
-    testsList.appendChild(emptyState);
+  if (filtered.length === 0) {
+    const empty = document.createElement("article");
+    empty.className = "module-empty";
+    empty.textContent = "Aucun module trouvé avec cette recherche.";
+    testsModules.appendChild(empty);
     return;
   }
 
-  filteredModules.forEach((module) => {
+  filtered.forEach((module) => {
     const moduleState = ensureModuleState(module.id);
-    const validated = moduleState.validated;
+    const done = moduleState.validated;
+    const visual = MODULE_VISUALS[module.id] || MODULE_VISUALS[1];
 
-    const card = document.createElement("article");
-    card.className = `module-card${validated ? " validated" : ""}`;
-    card.dataset.moduleId = module.id;
+    const article = document.createElement("article");
+    article.className = "module-card";
 
-    const visualStyle = `background: linear-gradient(135deg, var(--brand), var(--accent));`;
+    article.innerHTML = `
+      <div class="module-main">
+        <span class="module-icon" style="background:${visual.bg}; color:${visual.color}; border-color:${visual.border};">
+          <span class="material-symbols-outlined">${module.icon}</span>
+        </span>
 
-    card.innerHTML = `
-      <div class="module-visual" style="${visualStyle}">
-         <!-- Image will go here later -->
-         <span class="module-icon-overlay" aria-hidden="true">${getModuleIcon(module.id)}</span>
-      </div>
-      <div class="module-content">
-        <div class="module-header">
-           <span class="badge ${validated ? "ok" : "pending"}">
-            ${validated ? "Validé" : "À faire"}
-          </span>
-          <p class="module-id">Module ${module.id}</p>
-        </div>
-        <h3 class="module-title">${module.name}</h3>
-        <p class="module-sub">Entraînement en 40 questions</p>
-        
-        <div class="module-actions">
-          <button class="btn btn-primary" type="button" data-action="open" data-module-id="${module.id}">Ouvrir le test</button>
-          <button class="btn btn-secondary-icon" type="button" data-action="validate" data-module-id="${module.id}" aria-label="Valider ce thème">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
-          </button>
+        <div class="module-copy">
+          <div class="module-state-row">
+            <span class="module-badge ${done ? "done" : "todo"}">${done ? "Validé" : "À faire"}</span>
+            <span class="module-id">Module ${module.id}</span>
+          </div>
+
+          <h4 class="module-title">${module.id}. ${module.name}</h4>
+          <p class="module-sub">${
+            done && moduleState.validatedAt
+              ? `Validé le ${formatDate(moduleState.validatedAt)}`
+              : "40 questions • 20 min"
+          }</p>
         </div>
       </div>
+
+      <button class="module-launch" type="button" data-action="launch" data-module-id="${module.id}">
+        ${done ? "Rejouer" : "Lancer"}
+        <span class="material-symbols-outlined">play_arrow</span>
+      </button>
     `;
 
-    testsList.appendChild(card);
+    testsModules.appendChild(article);
   });
 }
 
 function renderProgress() {
   progressList.innerHTML = "";
 
+  const userName = getUserName();
   const validatedCount = getValidatedCount();
   const percent = getProgressPercent(validatedCount);
 
-  ringFill.style.strokeDashoffset = String(RING_CIRCUMFERENCE * (1 - percent / 100));
-  ringPercent.textContent = `${percent}%`;
-  ringCount.textContent = `${validatedCount}/${MODULES.length}`;
+  progressScoreValue.textContent = `${validatedCount}/${MODULES.length}`;
+  progressFraction.textContent = `${validatedCount}/${MODULES.length}`;
+  progressBarFill.style.width = `${percent}%`;
 
-  progressSummary.textContent =
-    validatedCount === 0
-      ? "Tu n'as pas encore validé de thème."
-      : `${validatedCount} thème${validatedCount > 1 ? "s" : ""} validé${validatedCount > 1 ? "s" : ""}.`;
+  if (validatedCount === MODULES.length) {
+    progressBadge.textContent = "Objectif atteint";
+    progressMessage.textContent = `Bravo ${userName} ! Tous les modules sont validés.`;
+  } else if (validatedCount === 0) {
+    progressBadge.textContent = "En cours";
+    progressMessage.textContent = `On démarre ensemble, ${userName}. L'objectif est proche.`;
+  } else {
+    progressBadge.textContent = "En cours";
+    progressMessage.textContent = `Super ${userName}, encore ${MODULES.length - validatedCount} module${
+      MODULES.length - validatedCount > 1 ? "s" : ""
+    } à valider.`;
+  }
 
   MODULES.forEach((module) => {
     const moduleState = ensureModuleState(module.id);
-    const validated = moduleState.validated;
+    const done = moduleState.validated;
+    const visual = MODULE_VISUALS[module.id] || MODULE_VISUALS[1];
 
     const item = document.createElement("article");
-    item.className = `progress-item${validated ? " validated" : ""}`;
-
-    const dateLabel =
-      validated && moduleState.validatedAt
-        ? `Validé le ${formatDate(moduleState.validatedAt)}`
-        : "Pas encore validé";
+    item.className = "progress-item";
 
     item.innerHTML = `
-      <div class="progress-top">
-        <div class="progress-identity">
-          <span class="progress-icon" aria-hidden="true">${getModuleIcon(module.id)}</span>
-          <div>
-            <p class="progress-title">${module.id}. ${module.name}</p>
-            <p class="progress-sub">${dateLabel}</p>
-          </div>
-        </div>
-        <span class="badge ${validated ? "ok" : "pending"}">
-          ${validated ? "Validé" : "À faire"}
+      <div class="progress-item-main">
+        <span class="progress-item-icon" style="background:${visual.bg}; color:${visual.color};">
+          <span class="material-symbols-outlined">${module.icon}</span>
         </span>
+        <div>
+          <p class="progress-item-title">${module.id}. ${module.name}</p>
+          <p class="progress-item-sub">${
+            done && moduleState.validatedAt
+              ? `Validé le ${formatDate(moduleState.validatedAt)}`
+              : "À valider"
+          }</p>
+        </div>
       </div>
+      <span class="progress-dot ${done ? "done" : ""}" aria-hidden="true"></span>
     `;
 
     progressList.appendChild(item);
   });
+}
+
+function renderSettings() {
+  settingsNameInput.value = state.userName;
+  darkmodeToggle.checked = state.darkMode;
+}
+
+function openNameModal() {
+  nameModal.classList.remove("hidden");
+  nameInput.value = state.userName;
+  window.setTimeout(() => {
+    nameInput.focus();
+  }, 80);
+}
+
+function closeNameModal() {
+  nameModal.classList.add("hidden");
+}
+
+function openPretest(moduleId) {
+  const module = MODULES.find((item) => item.id === moduleId);
+  if (!module) {
+    return;
+  }
+
+  selectedModuleId = moduleId;
+  pretestStep = 0;
+  pretestModuleName.textContent = `${module.id}. ${module.name}`;
+  pretestModal.classList.remove("hidden");
+  renderPretestStep(true);
+}
+
+function closePretest() {
+  pretestModal.classList.add("hidden");
+}
+
+function renderPretestStep(initial = false) {
+  const total = PRETEST_STEPS.length;
+  const current = PRETEST_STEPS[pretestStep];
+
+  pretestStepIndex.textContent = `Étape ${pretestStep + 1}/${total}`;
+
+  if (!initial) {
+    pretestStepCard.classList.add("step-change");
+    window.setTimeout(() => {
+      pretestStepCard.textContent = current;
+      pretestStepCard.classList.remove("step-change");
+    }, 120);
+  } else {
+    pretestStepCard.textContent = current;
+  }
+
+  pretestDots.innerHTML = PRETEST_STEPS.map(
+    (_, index) => `<span class="${index === pretestStep ? "active" : ""}"></span>`
+  ).join("");
+
+  pretestNextBtn.textContent = pretestStep === total - 1 ? "C’est parti 🚀" : "Suivant";
+}
+
+function handlePretestNext() {
+  if (pretestStep < PRETEST_STEPS.length - 1) {
+    pretestStep += 1;
+    renderPretestStep();
+    return;
+  }
+
+  const moduleId = selectedModuleId;
+  closePretest();
+  if (moduleId) {
+    openTestScreen(moduleId);
+  }
+}
+
+function openTestScreen(moduleId) {
+  const module = MODULES.find((item) => item.id === moduleId);
+  if (!module) {
+    return;
+  }
+
+  activeTestModuleId = moduleId;
+  testModuleTitle.textContent = `${module.id}. ${module.name}`;
+  testProgressFill.style.width = `${Math.max(10, Math.round((module.id / MODULES.length) * 100))}%`;
+  testFrame.src = module.url;
+
+  testScreen.classList.remove("hidden");
+  testScreen.setAttribute("aria-hidden", "false");
+}
+
+function closeTestScreen(openValidation) {
+  const moduleId = activeTestModuleId;
+
+  testScreen.classList.add("hidden");
+  testScreen.setAttribute("aria-hidden", "true");
+  testFrame.src = "about:blank";
+  activeTestModuleId = null;
+
+  if (openValidation && moduleId) {
+    openMascotModal(moduleId);
+  }
+}
+
+function refreshTestFrame() {
+  if (!activeTestModuleId) {
+    return;
+  }
+
+  const module = MODULES.find((item) => item.id === activeTestModuleId);
+  if (!module) {
+    return;
+  }
+
+  testFrame.src = "about:blank";
+  window.setTimeout(() => {
+    testFrame.src = module.url;
+  }, 80);
+}
+
+function openMascotModal(moduleId) {
+  const module = MODULES.find((item) => item.id === moduleId);
+  if (!module) {
+    return;
+  }
+
+  selectedModuleId = moduleId;
+  mascotStep = 0;
+  mascotAnswers = [false, false];
+  mascotResult = false;
+
+  mascotModuleName.textContent = `Module ${module.id} : ${module.name}`;
+  mascotFeedback.textContent = "";
+  mascotFeedback.classList.remove("success", "fail");
+  mascotActions.classList.remove("hidden");
+  mascotCloseBtn.classList.add("hidden");
+
+  renderMascotQuestion();
+  mascotModal.classList.remove("hidden");
+}
+
+function closeMascotModal() {
+  mascotModal.classList.add("hidden");
+}
+
+function renderMascotQuestion() {
+  mascotQuestion.textContent = MASCOT_QUESTIONS[mascotStep] || "";
+}
+
+function handleMascotAnswer(answer) {
+  if (!selectedModuleId) {
+    return;
+  }
+
+  mascotAnswers[mascotStep] = answer;
+
+  if (mascotStep < MASCOT_QUESTIONS.length - 1) {
+    mascotStep += 1;
+    renderMascotQuestion();
+    return;
+  }
+
+  const success = mascotAnswers.every(Boolean);
+  mascotResult = success;
+  const userName = getUserName();
+
+  if (success) {
+    const moduleState = ensureModuleState(selectedModuleId);
+    moduleState.validated = true;
+    moduleState.validatedAt = new Date().toISOString();
+    state.lastActivity = moduleState.validatedAt;
+
+    persistState();
+    renderAll();
+
+    mascotFeedback.textContent = `Bravo ${userName} !`;
+    mascotFeedback.classList.add("success");
+    showToast("Module validé");
+    mascotCloseBtn.textContent = "Voir ma progression";
+  } else {
+    const moduleState = ensureModuleState(selectedModuleId);
+    if (!moduleState.validated) {
+      moduleState.validated = false;
+      moduleState.validatedAt = null;
+      persistState();
+      renderAll();
+    }
+
+    mascotFeedback.textContent = `Tu vas l’avoir ${userName} 💪`;
+    mascotFeedback.classList.add("fail");
+    showToast("Continue, tu progresses");
+    mascotCloseBtn.textContent = "Continuer l'entraînement";
+  }
+
+  mascotActions.classList.add("hidden");
+  mascotCloseBtn.classList.remove("hidden");
 }
 
 function getValidatedCount() {
@@ -572,71 +844,59 @@ function getNextModule() {
   );
 }
 
-function getModuleIcon(moduleId) {
-  return MODULE_ICONS[moduleId] || MODULE_ICONS[1];
-}
+function getStreakDays() {
+  const uniqueDays = Array.from(
+    new Set(
+      Object.values(state.modules)
+        .filter((module) => module && module.validated && module.validatedAt)
+        .map((module) => toDayKey(module.validatedAt))
+    )
+  )
+    .filter(Boolean)
+    .sort((a, b) => (a > b ? -1 : 1));
 
-function normalizedText(value) {
-  return value
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "")
-    .trim();
-}
-
-function openPretest(moduleId) {
-  const module = MODULES.find((item) => item.id === moduleId);
-  if (!module) {
-    return;
+  if (uniqueDays.length === 0) {
+    return 0;
   }
 
-  selectedModuleId = moduleId;
-  pretestModuleName.textContent = `${module.id}. ${module.name}`;
-  pretestModal.classList.remove("hidden");
-}
+  let streak = 1;
+  for (let index = 1; index < uniqueDays.length; index += 1) {
+    const previous = new Date(`${uniqueDays[index - 1]}T00:00:00`);
+    const current = new Date(`${uniqueDays[index]}T00:00:00`);
+    const diffDays = Math.round((previous.getTime() - current.getTime()) / 86400000);
 
-function closePretest() {
-  pretestModal.classList.add("hidden");
-}
+    if (diffDays !== 1) {
+      break;
+    }
 
-function openIframeScreen(moduleId) {
-  const module = MODULES.find((item) => item.id === moduleId);
-  if (!module) {
-    return;
+    streak += 1;
   }
 
-  iframeModuleId = moduleId;
-  iframeScreenTitle.textContent = `${module.id}. ${module.name}`;
-  moduleIframe.src = module.url;
-  iframeScreen.classList.remove("hidden");
-  iframeScreen.setAttribute("aria-hidden", "false");
+  return streak;
 }
 
-function closeIframeScreen() {
-  iframeScreen.classList.add("hidden");
-  iframeScreen.setAttribute("aria-hidden", "true");
-  moduleIframe.src = "about:blank";
-  iframeModuleId = null;
+function toDayKey(dateInput) {
+  const date = new Date(dateInput);
+  if (Number.isNaN(date.getTime())) {
+    return "";
+  }
+
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+  return `${year}-${month}-${day}`;
 }
 
-function openValidation(moduleId) {
-  selectedModuleId = moduleId;
-  checkFinished.checked = false;
-  checkScore.checked = false;
-  validationFeedback.textContent = "";
-  validationModal.classList.remove("hidden");
-}
-
-function closeValidation() {
-  validationModal.classList.add("hidden");
+function getUserName() {
+  return state.userName || "pilote";
 }
 
 function applyTheme(isDark) {
   document.documentElement.setAttribute("data-theme", isDark ? "dark" : "light");
 
-  const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) {
-    themeMeta.setAttribute("content", isDark ? "#07101f" : "#f5f7ff");
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) {
+    meta.setAttribute("content", isDark ? "#0f172a" : "#f8f8f5");
   }
 }
 
@@ -644,11 +904,11 @@ function showToast(message) {
   toast.textContent = message;
   toast.classList.remove("hidden");
 
-  if (toastTimeout) {
-    window.clearTimeout(toastTimeout);
+  if (toastTimer) {
+    window.clearTimeout(toastTimer);
   }
 
-  toastTimeout = window.setTimeout(() => {
+  toastTimer = window.setTimeout(() => {
     toast.classList.add("hidden");
   }, 2200);
 }
@@ -659,6 +919,14 @@ function formatDate(input) {
     month: "2-digit",
     year: "numeric",
   }).format(new Date(input));
+}
+
+function normalizeSearch(value) {
+  return value
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .trim();
 }
 
 function registerServiceWorker() {
@@ -675,7 +943,7 @@ function registerServiceWorker() {
 
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("./service-worker.js").catch(() => {
-      // L'application reste utilisable même sans cache hors ligne.
+      // L'application reste utilisable sans cache hors ligne.
     });
   });
 }

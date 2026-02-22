@@ -3,3 +3,5 @@ node_modules/
 .netlify/
 .vscode/
 assets/img/
+stitch_exports/
+Stitch-MasterDesign/

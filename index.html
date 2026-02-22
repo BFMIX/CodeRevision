@@ -1,316 +1,285 @@
 <!doctype html>
-<html lang="fr" data-theme="light">
+<html lang="fr" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0f172a" />
     <meta
       name="description"
-      content="Application Web & Mobile d'entraînement au code de la route français, gratuite et centrée sur les tests."
+      content="Application Web et Mobile d'entraînement au code de la route, orientée tests et progression personnelle."
     />
-    <title>CodeRevision | Entraînement Code de la Route</title>
+    <title>CodeRevision</title>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Lexend:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="manifest" href="./manifest.webmanifest" />
     <link rel="icon" href="./assets/branding/app-icon.png" type="image/png" />
     <link rel="apple-touch-icon" href="./assets/branding/app-icon.png" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="background-glow glow-a" aria-hidden="true"></div>
-    <div class="background-glow glow-b" aria-hidden="true"></div>
-    <div class="background-grid" aria-hidden="true"></div>
+    <div class="ambient-bg" aria-hidden="true"></div>
 
     <div class="app-shell">
-      <header class="app-header">
-        <div class="header-brand">
-          <img
-            src="./assets/branding/logo-noText-nb.png"
-            alt="CodeRevision"
-            class="brand-icon-image"
-            width="72"
-            height="72"
-          />
-          <div class="brand-copy">
-            <div class="header-chip">CodeRevision</div>
-            <h1>Ta révision du code, claire et motivante</h1>
-            <p class="header-subtitle">
-              Choisis un thème, lance un entraînement et suis tes progrès pas à pas.
-            </p>
+      <aside class="desktop-sidebar" aria-label="Navigation bureau">
+        <div class="sidebar-top">
+          <div class="sidebar-brand">
+            <img
+              src="./assets/branding/logo-noText-nb.png"
+              alt="CodeRevision"
+              class="sidebar-logo"
+              width="44"
+              height="44"
+            />
+            <h1>Code <span>Révision</span></h1>
           </div>
-          <img
-            src="./assets/branding/text-logo.png"
-            alt="CodeRevision"
-            class="brand-wordmark-image"
-            width="180"
-            height="180"
-          />
+
+          <nav class="sidebar-nav">
+            <a href="#/home" class="route-link" data-route-link="home">
+              <span class="material-symbols-outlined">dashboard</span>
+              <span>Réviser</span>
+            </a>
+            <a href="#/tests" class="route-link" data-route-link="tests">
+              <span class="material-symbols-outlined">menu_book</span>
+              <span>Séries</span>
+            </a>
+            <a href="#/progress" class="route-link" data-route-link="progress">
+              <span class="material-symbols-outlined">analytics</span>
+              <span>Progrès</span>
+            </a>
+            <a href="#/settings" class="route-link" data-route-link="settings">
+              <span class="material-symbols-outlined">settings</span>
+              <span>Paramètres</span>
+            </a>
+          </nav>
         </div>
-        <nav class="header-menu" aria-label="Menu principal">
-          <a class="nav-link-desktop" data-route-link="home" href="#/home">Accueil</a>
-          <a class="nav-link-desktop" data-route-link="tests" href="#/tests">Tests</a>
-          <a class="nav-link-desktop" data-route-link="progress" href="#/progress">Progression</a>
-          <a class="nav-link-desktop" data-route-link="settings" href="#/settings">Paramètres</a>
-        </nav>
-      </header>
+      </aside>
 
-      <main id="app-main" class="app-main" aria-live="polite">
-        <section class="view active" data-view="home">
-          <article class="card hero-card">
-            <div class="hero-content">
-              <p class="section-eyebrow">Prêt pour l'examen ?</p>
-              <h2>Objectif : 35 bonnes réponses sur 40</h2>
-              <p class="hero-text">
-                Tu avances thème par thème avec une progression simple, lisible et encourageante.
-              </p>
-
-              <div class="hero-metrics">
-                <div class="metric-card">
-                  <p id="home-count" class="metric-value">0/10</p>
-                  <p class="metric-label">thèmes validés</p>
-                </div>
-                <div class="metric-card">
-                  <p id="home-percent" class="metric-value">0%</p>
-                  <p class="metric-label">progression</p>
-                </div>
-              </div>
-
-              <div class="hero-actions">
-                <a class="btn btn-primary" href="#/tests">Commencer un entraînement</a>
-                <button id="home-continue-btn" class="btn btn-secondary" type="button">
-                  <span id="home-continue-label">Continuer</span>
-                </button>
-              </div>
-              <p id="home-next-hint" class="hint-text"></p>
+      <div class="app-pane">
+        <header class="top-header">
+          <div class="header-left">
+            <img
+              src="./assets/branding/logo-noText-nb.png"
+              alt="CodeRevision"
+              class="header-logo"
+              width="44"
+              height="44"
+            />
+            <div>
+              <p id="topbar-kicker" class="header-kicker">Session du jour</p>
+              <h2 id="topbar-title" class="header-title">Code Révision</h2>
             </div>
-
-            <div class="hero-visual" aria-hidden="true">
-              <img src="./assets/branding/background.png" alt="" class="hero-bg-image" />
-              <img src="./assets/branding/logo-with-text.png" alt="" class="hero-logo-image" />
-            </div>
-          </article>
-
-          <div class="home-grid">
-            <article class="card">
-              <div class="section-title">
-                <span class="section-icon" aria-hidden="true">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.9"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M12 7v6l4 2"></path>
-                  </svg>
-                </span>
-                <h3>Comment ça fonctionne</h3>
-              </div>
-              <ul class="clean-list">
-                <li>Choisis un thème et lance le test.</li>
-                <li>À ton retour, valide ton résultat en 2 clics.</li>
-                <li>Ton suivi reste disponible sur cet appareil.</li>
-              </ul>
-            </article>
           </div>
-        </section>
 
-        <section class="view" data-view="tests">
-          <div class="card tests-header-card">
-            <div class="section-title">
-              <h2>Tests par thème</h2>
+          <button
+            id="header-settings-btn"
+            class="icon-button"
+            type="button"
+            aria-label="Paramètres"
+          >
+            <span class="material-symbols-outlined">settings</span>
+          </button>
+        </header>
+
+        <main class="app-main" id="app-main" aria-live="polite">
+          <section class="view active" data-view="home">
+            <article class="glass-panel home-hero">
+              <div class="home-hero-content">
+                <p class="hero-label">Premium PWA</p>
+                <h3 id="home-greeting">Salut 👋</h3>
+                <p id="home-subtitle" class="hero-subtitle">Prêt pour ta session du jour ?</p>
+
+                <div class="hero-progress">
+                  <div>
+                    <p class="metric-title">Progression globale</p>
+                    <p id="home-progress-text" class="hero-progress-copy">0% du code complété</p>
+                    <button id="home-continue-btn" class="btn-primary" type="button">
+                      Continuer
+                    </button>
+                  </div>
+
+                  <div class="progress-ring-wrap" aria-hidden="true">
+                    <svg viewBox="0 0 140 140" class="progress-ring-svg">
+                      <circle cx="70" cy="70" r="54" class="progress-ring-track"></circle>
+                      <circle
+                        id="home-ring-fill"
+                        cx="70"
+                        cy="70"
+                        r="54"
+                        class="progress-ring-fill"
+                      ></circle>
+                    </svg>
+                    <span id="home-ring-value" class="progress-ring-value">0%</span>
+                  </div>
+                </div>
+              </div>
+            </article>
+
+            <section class="stack-section">
+              <div class="section-head">
+                <h3>Dernière activité</h3>
+              </div>
+
+              <article class="activity-card">
+                <div class="activity-icon">
+                  <span class="material-symbols-outlined">menu_book</span>
+                </div>
+                <div class="activity-text">
+                  <h4 id="home-activity-main">Aucun module lancé pour le moment</h4>
+                  <p id="home-activity-sub">Commence un module pour suivre ton rythme.</p>
+                </div>
+              </article>
+            </section>
+
+            <section class="home-stats-grid">
+              <article class="glass-mini-stat">
+                <span class="material-symbols-outlined">local_fire_department</span>
+                <strong id="home-streak">0</strong>
+                <p>Jours de suite</p>
+              </article>
+              <article class="glass-mini-stat">
+                <span class="material-symbols-outlined">event</span>
+                <strong id="home-last-date">-</strong>
+                <p>Dernière validation</p>
+              </article>
+            </section>
+          </section>
+
+          <section class="view" data-view="tests">
+            <div class="tests-head">
+              <h3>Vos Séries d'entraînement</h3>
+              <p>10 modules disponibles</p>
             </div>
-            <p class="section-text">Choisis un thème et lance un test.</p>
 
-            <div class="test-tools">
-              <label class="search-field" for="tests-search">
-                <span class="search-icon" aria-hidden="true">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.9"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                  >
-                    <circle cx="11" cy="11" r="7"></circle>
-                    <path d="m20 20-3.5-3.5"></path>
-                  </svg>
-                </span>
+            <label class="search-box" for="tests-search">
+              <span class="material-symbols-outlined">search</span>
+              <input
+                id="tests-search"
+                type="search"
+                placeholder="Rechercher un module"
+                autocomplete="off"
+              />
+            </label>
+
+            <p id="tests-meta" class="tests-meta"></p>
+
+            <div id="tests-modules" class="modules-list"></div>
+          </section>
+
+          <section class="view" data-view="progress">
+            <article class="glass-panel progress-banner">
+              <div class="progress-banner-head">
+                <div>
+                  <p class="metric-title">Validations totales</p>
+                  <h3 id="progress-score-value">0/10</h3>
+                </div>
+                <span id="progress-badge" class="progress-pill">En cours</span>
+              </div>
+
+              <div class="progress-bar-line">
+                <span id="progress-bar-fill"></span>
+              </div>
+
+              <p id="progress-message" class="progress-banner-message">
+                Continue, tu es sur la bonne voie.
+              </p>
+            </article>
+
+            <article class="progress-note">
+              <span class="material-symbols-outlined">info</span>
+              <p>Progression interne (non officielle)</p>
+            </article>
+
+            <div class="progress-list-head">
+              <h3>État des modules</h3>
+              <span id="progress-fraction">0/10</span>
+            </div>
+
+            <div id="progress-list" class="progress-list"></div>
+          </section>
+
+          <section class="view" data-view="settings">
+            <article class="settings-block">
+              <h3>Compte</h3>
+
+              <label class="settings-field" for="settings-name-input">
+                <span>Prénom</span>
                 <input
-                  id="tests-search"
-                  type="search"
-                  placeholder="Rechercher un thème"
-                  autocomplete="off"
+                  id="settings-name-input"
+                  type="text"
+                  maxlength="24"
+                  placeholder="Ton prénom"
                 />
               </label>
 
-              <div class="filter-chips" role="tablist" aria-label="Filtrer les thèmes">
-                <button class="filter-chip active" type="button" data-filter="all">Tous</button>
-                <button class="filter-chip" type="button" data-filter="todo">À faire</button>
-                <button class="filter-chip" type="button" data-filter="done">Validés</button>
-              </div>
-            </div>
-            <p id="tests-results-meta" class="hint-text"></p>
-          </div>
+              <button id="settings-name-save" class="btn-primary" type="button">Enregistrer</button>
+            </article>
 
-          <div id="tests-list" class="tests-grid"></div>
-        </section>
+            <article class="settings-block">
+              <h3>Préférences</h3>
 
-        <section class="view" data-view="progress">
-          <article class="card progress-card">
-            <div class="section-title">
-              <span class="section-icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.9"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M5 19V9"></path>
-                  <path d="M12 19V5"></path>
-                  <path d="M19 19v-7"></path>
-                </svg>
-              </span>
-              <h2>Progression</h2>
-            </div>
+              <label class="toggle-row" for="darkmode-toggle">
+                <span>Mode sombre</span>
+                <span class="toggle-switch">
+                  <input id="darkmode-toggle" type="checkbox" />
+                  <span class="toggle-slider"></span>
+                </span>
+              </label>
+            </article>
 
-            <div class="progress-hero">
-              <div class="ring-wrap">
-                <svg class="progress-ring" viewBox="0 0 140 140" aria-hidden="true">
-                  <circle class="ring-track" cx="70" cy="70" r="52"></circle>
-                  <circle id="ring-fill" class="ring-fill" cx="70" cy="70" r="52"></circle>
-                </svg>
-                <div class="ring-content">
-                  <p id="ring-percent" class="ring-percent">0%</p>
-                  <p id="ring-count" class="ring-count">0/10</p>
-                </div>
-              </div>
+            <article class="settings-block danger">
+              <h3>Système</h3>
+              <button id="reset-progress-btn" class="btn-danger" type="button">
+                Réinitialiser ma progression
+              </button>
+            </article>
+          </section>
+        </main>
+      </div>
+    </div>
 
-              <div class="progress-copy">
-                <p id="progress-summary" class="section-text">Aucun thème validé pour l'instant.</p>
-                <p class="disclaimer">Progression (non officielle)</p>
-              </div>
-            </div>
-          </article>
+    <nav class="bottom-nav" aria-label="Navigation principale">
+      <a href="#/home" class="route-link" data-route-link="home">
+        <span class="material-symbols-outlined">school</span>
+        <span>Réviser</span>
+      </a>
+      <a href="#/tests" class="route-link" data-route-link="tests">
+        <span class="material-symbols-outlined">layers</span>
+        <span>Séries</span>
+      </a>
+      <a href="#/progress" class="route-link" data-route-link="progress">
+        <span class="material-symbols-outlined">analytics</span>
+        <span>Progrès</span>
+      </a>
+      <a href="#/settings" class="route-link" data-route-link="settings">
+        <span class="material-symbols-outlined">settings</span>
+        <span>Paramètres</span>
+      </a>
+    </nav>
 
-          <div id="progress-list" class="progress-list"></div>
-        </section>
-
-        <section class="view" data-view="settings">
-          <article class="card">
-            <div class="section-title">
-              <span class="section-icon" aria-hidden="true">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.9"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <circle cx="12" cy="12" r="3"></circle>
-                  <path
-                    d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.3.47.65.6 1 .08.32.2.65.33 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33c-.29.18-.53.43-.69.67Z"
-                  ></path>
-                </svg>
-              </span>
-              <h2>Paramètres</h2>
-            </div>
-
-            <label class="switch-row" for="darkmode-toggle">
-              <span class="switch-label">Mode sombre</span>
-              <span class="switch">
-                <input id="darkmode-toggle" type="checkbox" />
-                <span class="switch-slider"></span>
-              </span>
-            </label>
-
-            <button id="reset-btn" class="btn btn-danger" type="button">
-              Réinitialiser ma progression
-            </button>
-          </article>
-        </section>
-      </main>
-
-      <nav class="bottom-nav" aria-label="Navigation principale">
-        <a class="nav-link" data-route-link="home" href="#/home">
-          <span class="icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M3 10.5 12 3l9 7.5"></path>
-              <path d="M5 9.5V21h14V9.5"></path>
-            </svg>
-          </span>
-          <span>Accueil</span>
-        </a>
-        <a class="nav-link" data-route-link="tests" href="#/tests">
-          <span class="icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M9 3h6"></path>
-              <path d="M10 3v5l-5 8a4 4 0 0 0 3.4 6h7.2A4 4 0 0 0 19 16l-5-8V3"></path>
-              <path d="M8.5 14h7"></path>
-            </svg>
-          </span>
-          <span>Tests</span>
-        </a>
-        <a class="nav-link" data-route-link="progress" href="#/progress">
-          <span class="icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M5 19V9"></path>
-              <path d="M12 19V5"></path>
-              <path d="M19 19v-7"></path>
-            </svg>
-          </span>
-          <span>Progression</span>
-        </a>
-        <a class="nav-link" data-route-link="settings" href="#/settings">
-          <span class="icon" aria-hidden="true">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.9"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <circle cx="12" cy="12" r="3"></circle>
-              <path
-                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.33 1V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-.33-1 1.65 1.65 0 0 0-1-.6 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-.6-1 1.65 1.65 0 0 0-1-.33H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1-.33 1.65 1.65 0 0 0 .6-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .33-1V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 .33 1 1.65 1.65 0 0 0 1 .6 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.26.3.47.65.6 1 .08.32.2.65.33 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1 .33c-.29.18-.53.43-.69.67Z"
-              ></path>
-            </svg>
-          </span>
-          <span>Paramètres</span>
-        </a>
-      </nav>
+    <div
+      id="name-modal"
+      class="overlay hidden"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="name-modal-title"
+    >
+      <div class="overlay-card welcome-card">
+        <p class="overlay-kicker">Bienvenue</p>
+        <h3 id="name-modal-title">Comment t'appelles-tu ?</h3>
+        <p class="overlay-sub">Ton prénom sera utilisé pour personnaliser tes encouragements.</p>
+        <input id="name-input" type="text" maxlength="24" placeholder="Entre ton prénom" />
+        <button id="name-save-btn" class="btn-primary" type="button">Commencer</button>
+      </div>
     </div>
 
     <div
@@ -320,76 +289,87 @@
       aria-modal="true"
       aria-labelledby="pretest-title"
     >
-      <div class="overlay-card pretest-card">
-        <p class="section-eyebrow">Avant de commencer</p>
-        <h3 id="pretest-title">Rappels rapides</h3>
-        <p id="pretest-module-name" class="muted-text"></p>
+      <div class="overlay-card pretest-flow-card">
+        <p class="overlay-kicker">Avant de commencer</p>
+        <h3 id="pretest-title">Rappel express</h3>
+        <p id="pretest-module-name" class="overlay-sub"></p>
 
-        <div class="rules">
-          <p>Lis bien chaque question jusqu’au bout : une réponse incomplète = faux ❌</p>
-          <p>Refais les tests tant que tu dépasses 3 fautes 🔁</p>
-          <p>Objectif examen : 35 bonnes réponses sur 40 💪</p>
+        <div class="pretest-stage">
+          <p id="pretest-step-index" class="pretest-step-index"></p>
+          <div id="pretest-step-card" class="pretest-step-card"></div>
+          <div id="pretest-dots" class="pretest-dots" aria-hidden="true"></div>
         </div>
 
         <div class="overlay-actions">
-          <button id="cancel-pretest-btn" class="btn btn-secondary" type="button">Annuler</button>
-          <button id="start-test-btn" class="btn btn-primary pulse" type="button">
-            Commencer le test
-          </button>
+          <button id="pretest-cancel-btn" class="btn-secondary" type="button">Plus tard</button>
+          <button id="pretest-next-btn" class="btn-primary" type="button">Suivant</button>
         </div>
       </div>
-    </div>
-
-    <div id="iframe-screen" class="iframe-screen hidden" aria-hidden="true">
-      <header class="iframe-topbar">
-        <div class="iframe-actions-row">
-          <button id="iframe-back-btn" class="btn btn-secondary" type="button">Retour</button>
-          <button id="iframe-validate-btn" class="btn btn-primary" type="button">
-            Valider ce test
-          </button>
-        </div>
-        <p id="iframe-screen-title"></p>
-      </header>
-      <iframe
-        id="module-iframe"
-        title="Test code de la route"
-        loading="eager"
-        allow="fullscreen"
-        referrerpolicy="strict-origin-when-cross-origin"
-      ></iframe>
     </div>
 
     <div
-      id="validation-modal"
+      id="mascot-modal"
       class="overlay hidden"
       role="dialog"
       aria-modal="true"
-      aria-labelledby="validation-title"
+      aria-labelledby="mascot-title"
     >
-      <div class="overlay-card">
-        <p class="section-eyebrow">Validation</p>
-        <h3 id="validation-title">Valide ton test</h3>
-        <form id="validation-form">
-          <label class="check-row">
-            <input id="check-finished" type="checkbox" />
-            <span>J’ai terminé le test en entier</span>
-          </label>
-          <label class="check-row">
-            <input id="check-score" type="checkbox" />
-            <span>J’ai eu au moins 35/40</span>
-          </label>
+      <div class="overlay-card mascot-card">
+        <img
+          src="./assets/mascot/coach.svg"
+          alt="Mascotte"
+          class="mascot-image"
+          width="96"
+          height="96"
+        />
+        <p class="overlay-kicker">Validation</p>
+        <h3 id="mascot-title">Coach Révision</h3>
+        <p id="mascot-module-name" class="overlay-sub"></p>
 
-          <p id="validation-feedback" class="feedback" aria-live="polite"></p>
+        <div id="mascot-question" class="speech-bubble"></div>
 
-          <div class="overlay-actions">
-            <button id="cancel-validation-btn" class="btn btn-secondary" type="button">
-              Fermer
-            </button>
-            <button class="btn btn-primary" type="submit">Valider ce thème</button>
-          </div>
-        </form>
+        <div id="mascot-actions" class="binary-actions">
+          <button type="button" data-answer="yes" class="btn-secondary">Oui</button>
+          <button type="button" data-answer="no" class="btn-secondary">Non</button>
+        </div>
+
+        <p id="mascot-feedback" class="mascot-feedback" aria-live="polite"></p>
+        <button id="mascot-close-btn" class="btn-primary hidden" type="button">Continuer</button>
       </div>
     </div>
+
+    <section id="test-screen" class="test-screen hidden" aria-hidden="true">
+      <div class="test-safe-top"></div>
+      <header class="test-topbar">
+        <button id="test-back-btn" class="test-back" type="button">
+          <span class="material-symbols-outlined">chevron_left</span>
+          Retour
+        </button>
+
+        <div class="test-title-wrap">
+          <p>Session en cours</p>
+          <h3 id="test-module-title">Module</h3>
+        </div>
+
+        <button id="test-refresh-btn" class="icon-button" type="button" aria-label="Actualiser">
+          <span class="material-symbols-outlined">refresh</span>
+        </button>
+      </header>
+
+      <div class="test-progress-track">
+        <span id="test-progress-fill"></span>
+      </div>
+
+      <div class="test-frame-wrap">
+        <iframe
+          id="test-frame"
+          title="Session d'entraînement"
+          loading="eager"
+          allow="fullscreen"
+          referrerpolicy="strict-origin-when-cross-origin"
+        ></iframe>
+      </div>
+    </section>
 
     <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 
